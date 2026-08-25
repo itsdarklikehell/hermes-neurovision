@@ -3,11 +3,10 @@
 import base64
 import curses
 import json
-import os
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 
 @dataclass

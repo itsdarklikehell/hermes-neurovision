@@ -1,6 +1,5 @@
 """Tests for hybrid themes — use draw_background() + nodes together."""
 import unittest.mock as mock
-import curses
 
 from hermes_neurovision.scene import ThemeState
 from hermes_neurovision.themes import build_theme_config

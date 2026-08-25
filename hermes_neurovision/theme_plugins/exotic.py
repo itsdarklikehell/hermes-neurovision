@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -217,7 +216,6 @@ class VolcanicPlugin(ThemePlugin):
         return 0.045
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import VOLCANO
         cx = max(2, state.width // 2)
         cy = max(2, state.height - VOLCANO.height - 1)
@@ -473,7 +471,6 @@ class SpiderWebPlugin(ThemePlugin):
         return "spoked"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import SPIDER
         cx = max(2, state.width // 2)
         cy = max(2, state.height // 2)

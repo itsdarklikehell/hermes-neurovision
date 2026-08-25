@@ -5,7 +5,7 @@ import os
 import tempfile
 import time
 
-from hermes_neurovision.sources.custom import poll as custom_poll, CustomSource
+from hermes_neurovision.sources.custom import CustomSource
 
 
 def test_custom_source_empty_file():

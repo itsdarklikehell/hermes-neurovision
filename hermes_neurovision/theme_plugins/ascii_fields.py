@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import curses
 import math
-from typing import List, Optional, Tuple
 
 import random
 from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, SpecialEffect
@@ -629,7 +628,6 @@ class StellarWeavePlugin(ThemePlugin):
         self._stars = stars
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses as _curses
         w = state.width
         h = state.height
         f = state.frame
@@ -1272,7 +1270,6 @@ class LissajousMindPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "cron_tick":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,

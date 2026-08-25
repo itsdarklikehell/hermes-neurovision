@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -633,7 +632,6 @@ class WormholePlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "agent_start" or event_kind == "session_resume":
             return Reaction(element=ReactiveElement.PULSE, intensity=1.0,

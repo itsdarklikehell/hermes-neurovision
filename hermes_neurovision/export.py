@@ -10,7 +10,6 @@ from typing import Optional
 
 from hermes_neurovision.themes import build_theme_config
 from hermes_neurovision.theme_plugins import get_plugin
-from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision import __version__
 
 

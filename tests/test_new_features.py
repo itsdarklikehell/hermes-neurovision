@@ -1,10 +1,9 @@
 """Tests for command menu, theme editor, and hide mode."""
 
-import pytest
 from hermes_neurovision.command_menu import CommandMenu, MenuItem
 from hermes_neurovision.theme_editor import (
     ThemeEditor, apply_custom_overrides, load_custom_config,
-    _color_name, _color_code, CUSTOM_DIR,
+    _color_name, _color_code,
 )
 from hermes_neurovision.themes import build_theme_config
 

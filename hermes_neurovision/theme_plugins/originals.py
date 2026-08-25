@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -82,7 +81,6 @@ class MoonwirePlugin(ThemePlugin):
         return "bright"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import MOON_ART
         moon_x = max(3, state.width - 10)
         MOON_ART.draw(stdscr, moon_x + 1, 2, color_pairs["bright"], anchor="topleft")

@@ -5,10 +5,10 @@ from __future__ import annotations
 import curses
 import math
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import TYPE_CHECKING, Dict, Iterable, Optional, Tuple
 
-from hermes_neurovision.themes import ThemeConfig, STAR_CHARS, PULSE_CHARS
+from hermes_neurovision.themes import STAR_CHARS, PULSE_CHARS
 from hermes_neurovision import postfx
 
 if TYPE_CHECKING:

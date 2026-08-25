@@ -89,9 +89,6 @@ class QuantumFoamPlugin(ThemePlugin):
         return None
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
-        import math
-        import random
 
         w, h = state.width, state.height
         f = state.frame

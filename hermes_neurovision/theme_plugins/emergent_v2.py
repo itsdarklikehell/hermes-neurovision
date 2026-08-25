@@ -17,7 +17,7 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from hermes_neurovision.plugin import (
     ThemePlugin,

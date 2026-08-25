@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register

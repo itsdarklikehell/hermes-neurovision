@@ -6,7 +6,6 @@ from hermes_neurovision.overlay import (
     SceneDelegate, GalleryDelegate, LiveDelegate, DaemonDelegate,
     _MODES, _TEXT_COLORS, _GLOW_COLORS, _FADE_MODES,
 )
-from hermes_neurovision.compositor import FadeConfig
 
 
 # ── SceneDelegate ──────────────────────────────────────────────────────

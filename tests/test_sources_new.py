@@ -1,10 +1,8 @@
 """Tests for Phase 7: New Data Sources + Phase 8: Export/Import."""
 
 import os
-import time
 import tempfile
 
-from hermes_neurovision.events import VisionEvent
 
 
 # ── sources/mcp.py ───────────────────────────────────────────────────

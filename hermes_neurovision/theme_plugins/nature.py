@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import math
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -63,7 +62,6 @@ class DeepAbyssPlugin(ThemePlugin):
         return 0.035
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import HYDROTHERMAL_VENT
         vent_x = max(4, state.width // 2)
         vent_y = max(4, state.height - HYDROTHERMAL_VENT.height - 1)

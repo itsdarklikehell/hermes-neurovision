@@ -2,7 +2,6 @@
 
 import json
 import pytest
-from pathlib import Path
 
 from hermes_neurovision.export import export_theme
 from hermes_neurovision.import_theme import import_theme, Version, IncompatibleVersionError

@@ -5,7 +5,7 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, SpecialEffect
 from hermes_neurovision.theme_plugins import register

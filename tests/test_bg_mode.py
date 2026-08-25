@@ -8,11 +8,8 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import signal
-import sys
-from pathlib import Path
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 import pytest
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -336,7 +333,6 @@ def test_alacritty_set_opacity_ipc_success():
 
 def test_alacritty_set_opacity_ipc_fallback_to_file(tmp_path):
     """When IPC fails, fall back to editing config file."""
-    import subprocess
     import hermes_neurovision.bg_mode as bgm
     cfg_file = tmp_path / "alacritty.toml"
     cfg_file.write_text("[window]\nopacity = 1.0\n")

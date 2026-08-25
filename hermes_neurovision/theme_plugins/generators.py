@@ -115,7 +115,6 @@ class LorenzAttractorPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
@@ -149,7 +148,6 @@ class LorenzAttractorPlugin(ThemePlugin):
 
 # ── 2. Fourier Epicycles ─────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
@@ -300,7 +298,6 @@ class FourierEpicyclesPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "memory_save" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
@@ -334,7 +331,6 @@ class FourierEpicyclesPlugin(ThemePlugin):
 
 # ── 3. Sand Cascade ──────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "memory_save" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
@@ -481,7 +477,6 @@ class SandCascadePlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "tool_call" or event_kind == "mcp_tool_call":
             return Reaction(element=ReactiveElement.RIPPLE, intensity=0.7,
@@ -577,7 +572,6 @@ class RorschachPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=0.9,
@@ -611,7 +605,6 @@ class RorschachPlugin(ThemePlugin):
 
 # ── 5. DLA Crystal ──────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=0.9,
@@ -757,7 +750,6 @@ class DlaCrystalPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
@@ -791,7 +783,6 @@ class DlaCrystalPlugin(ThemePlugin):
 
 # ── 6. Spirograph ────────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
@@ -924,7 +915,6 @@ class SpirographPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
@@ -958,7 +948,6 @@ class SpirographPlugin(ThemePlugin):
 
 # ── 7. Harmonograph ──────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
@@ -1074,7 +1063,6 @@ class HarmonographPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "llm_start" or event_kind == "llm_end":
             return Reaction(element=ReactiveElement.WAVE, intensity=0.8,
@@ -1108,7 +1096,6 @@ class HarmonographPlugin(ThemePlugin):
 
 # ── 8. Julia Morph ───────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "llm_start" or event_kind == "llm_end":
             return Reaction(element=ReactiveElement.WAVE, intensity=0.8,
@@ -1229,7 +1216,6 @@ class JuliaMorphPlugin(ThemePlugin):
 
                 _safe(stdscr, gy, gx, ch, attr)
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=1.0,

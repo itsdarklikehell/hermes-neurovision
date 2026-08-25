@@ -213,7 +213,6 @@ def apply_force_field(buf: FrameBuffer, plugin, frame: int, strength: float) -> 
     points = plugin.force_points(buf.w, buf.h, frame, strength)
     if not points:
         return
-    from hermes_neurovision.renderer import Cell
     w, h = buf.w, buf.h
     # Collect moveable cells
     movers = []

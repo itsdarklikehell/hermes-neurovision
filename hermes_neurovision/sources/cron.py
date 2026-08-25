@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-import json
 import os
 import time
-from typing import Dict, List
+from typing import List
 
 from hermes_neurovision.events import VisionEvent
 

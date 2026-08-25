@@ -12,8 +12,6 @@ from __future__ import annotations
 
 import curses
 import math
-import random
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -146,7 +144,6 @@ class Legacy2AuroraBorealisPlugin(ThemePlugin):
         return "accent"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         # Flat terrain line at the very bottom row using ▁ chars
         terrain_y = state.height - 2
         col_pair = curses.color_pair(color_pairs["base"])
@@ -323,7 +320,6 @@ class Legacy2BinaryRainPlugin(ThemePlugin):
         return "soft"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         # Dense cloud layer at top spanning entire width, several lines thick
         w = state.width
         frame = state.frame
@@ -642,7 +638,6 @@ class Legacy2NeonRainPlugin(ThemePlugin):
         return "ripple"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         w = state.width
         h = state.height
         frame = state.frame
@@ -735,7 +730,6 @@ class Legacy2VolcanicPlugin(ThemePlugin):
         return 0.045
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import VOLCANO
         cx = max(2, state.width // 2)
         cy = max(2, state.height - VOLCANO.height - 1)
@@ -927,7 +921,6 @@ class Legacy2SpiderWebPlugin(ThemePlugin):
         return "spoked"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import SPIDER
         cx = max(2, state.width // 2)
         cy = max(2, state.height // 2)
@@ -997,7 +990,6 @@ class Legacy2SnowGlobePlugin(ThemePlugin):
         return "│"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         w = state.width
         h = state.height
         cx = w // 2
@@ -1119,7 +1111,6 @@ class Legacy2CampfirePlugin(ThemePlugin):
         return "warning"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import BONFIRE
         cx = max(7, state.width // 2 - 6)
         bottom = max(10, state.height - 2)
@@ -1192,7 +1183,6 @@ class Legacy2AquariumPlugin(ThemePlugin):
         return "bright"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         w = state.width
         h = state.height
         frame = state.frame if hasattr(state, "frame") else 0
@@ -1493,7 +1483,6 @@ class Legacy2FireflyFieldPlugin(ThemePlugin):
         return "soft"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         w = state.width
         h = state.height
         # Grass line at bottom
@@ -1560,7 +1549,6 @@ class Legacy2MoonwirePlugin(ThemePlugin):
         return "bright"
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         from hermes_neurovision.ascii_art import MOON_ART
         moon_x = max(3, state.width - 10)
         MOON_ART.draw(stdscr, moon_x + 1, 2, color_pairs["bright"], anchor="topleft")
@@ -2041,7 +2029,6 @@ class Legacy2BlackHolePlugin(ThemePlugin):
         return (cx + math.cos(angle) * radius * 1.1, cy + math.sin(angle) * radius * 0.45)
 
     def draw_extras(self, stdscr, state, color_pairs):
-        import curses
         cx = max(2, state.width // 2)
         cy = max(2, state.height // 2)
         disk = ((cx - 2, cy, "(( "), (cx + 1, cy, "))"), (cx - 1, cy, "\u2588\u2588"))

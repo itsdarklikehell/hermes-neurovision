@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, List, Optional, Tuple
 
 if TYPE_CHECKING:
-    from hermes_neurovision.plugin import SpecialEffect
+    pass
 
 from hermes_neurovision.themes import ThemeConfig, STAR_CHARS, PACKET_CHARS
 

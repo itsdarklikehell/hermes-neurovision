@@ -6,7 +6,7 @@ import random
 import time
 from typing import Optional, Sequence
 
-from hermes_neurovision.themes import build_theme_config, FRAME_DELAY, THEMES, LEGACY_THEMES
+from hermes_neurovision.themes import build_theme_config, FRAME_DELAY, LEGACY_THEMES
 from hermes_neurovision.scene import ThemeState
 from hermes_neurovision.renderer import Renderer
 from hermes_neurovision.tune import TuneSettings, TuneOverlay

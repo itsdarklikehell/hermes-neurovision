@@ -18,7 +18,7 @@ from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, Sp
 from hermes_neurovision.theme_plugins import register
 from hermes_neurovision.theme_plugins.attractors import (
     _ensure_rainbow, _rainbow_pair, _rainbow_pair_angle,
-    _density_char, _attr_by_density, _R_PAIRS,
+    _density_char,
 )
 
 

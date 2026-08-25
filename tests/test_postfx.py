@@ -3,7 +3,7 @@
 import curses
 import unittest.mock as mock
 
-from hermes_neurovision.renderer import Cell, FrameBuffer
+from hermes_neurovision.renderer import FrameBuffer
 from hermes_neurovision import postfx
 
 

@@ -1,7 +1,7 @@
 """Tests for Phase 6: Event Pipeline Expansion."""
 
 from hermes_neurovision.events import VisionEvent
-from hermes_neurovision.bridge import Bridge, VisualTrigger
+from hermes_neurovision.bridge import Bridge
 from hermes_neurovision.sources.custom import EVENT_MAP
 from hermes_neurovision.log_overlay import SOURCE_COLORS, LogOverlay, _format_event
 
@@ -144,7 +144,6 @@ def test_log_overlay_new_source_colors():
     ev = VisionEvent(timestamp=1000000.0, source="mcp", kind="mcp_connected",
                      severity="info", data={"server": "test"})
     overlay.add_event(ev)
-    import time
     lines = overlay.get_visible_lines(1000000.0 + 1)
     assert len(lines) >= 1
     assert lines[-1][2] == "green"  # mcp color

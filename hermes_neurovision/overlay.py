@@ -26,7 +26,7 @@ from hermes_neurovision.scene import ThemeState
 from hermes_neurovision.renderer import Renderer
 
 if TYPE_CHECKING:
-    from hermes_neurovision.bridge import Bridge, VisualTrigger
+    from hermes_neurovision.bridge import Bridge
     from hermes_neurovision.events import EventPoller
 
 _MODES = ("daemon", "gallery", "live")

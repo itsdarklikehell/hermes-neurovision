@@ -7,7 +7,7 @@ Provides access to all neurovision features from a single menu.
 from __future__ import annotations
 
 import curses
-from typing import TYPE_CHECKING, Callable, List, Optional, Tuple
+from typing import TYPE_CHECKING, Callable, List, Optional
 
 if TYPE_CHECKING:
     pass

@@ -4,7 +4,7 @@ import asyncio
 import json
 import os
 import tempfile
-from unittest.mock import patch, MagicMock, call
+from unittest.mock import patch
 
 import pytest
 

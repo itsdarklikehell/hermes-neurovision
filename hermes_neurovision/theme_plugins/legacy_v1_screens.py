@@ -32,8 +32,6 @@ from hermes_neurovision.theme_plugins.attractors import (
     _ensure_rainbow,
     _rainbow_pair,
     _rainbow_pair_angle,
-    _density_char,
-    _attr_by_density,
 )
 
 

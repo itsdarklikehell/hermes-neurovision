@@ -14,7 +14,7 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import List, Optional, Tuple
+from typing import List
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -493,7 +493,6 @@ class AsciiRorschachPlugin(ThemePlugin):
 # GEOMETRIC 1: wireframe-cube — Spinning 3D wireframe cube + inner octahedron
 # ═══════════════════════════════════════════════════════════════════════════
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=1.0,
@@ -680,7 +679,6 @@ class WireframeCubePlugin(ThemePlugin):
 # GEOMETRIC 2: hypercube-fold — Rotating 4D tesseract projection
 # ═══════════════════════════════════════════════════════════════════════════
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
@@ -853,7 +851,6 @@ class HypercubePlugin(ThemePlugin):
                 _safe(stdscr, py, px, vch, attr)
 
     def react(self, event_kind, data):
-        import random
         from hermes_neurovision.plugin import ReactiveElement, Reaction
         if event_kind == "compression_started" or event_kind == "compression_ended":
             return Reaction(element=ReactiveElement.WAVE, intensity=1.0,
