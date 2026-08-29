@@ -13,11 +13,14 @@ from __future__ import annotations
 
 import curses
 import math
-from typing import List, Tuple
 
-from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, SpecialEffect
+from hermes_neurovision.plugin import (
+    Reaction,
+    ReactiveElement,
+    SpecialEffect,
+    ThemePlugin,
+)
 from hermes_neurovision.theme_plugins import register
-
 
 # ── Plasma Grid ───────────────────────────────────────────────────────────────
 
@@ -38,7 +41,7 @@ class PlasmaGridPlugin(ThemePlugin):
     _CHARS = " ·.:+*#@"
 
     def build_nodes(self, w: int, h: int, cx: float, cy: float,
-                    count: int, rng) -> List[Tuple[float, float]]:
+                    count: int, rng) -> list[tuple[float, float]]:
         """3×3 evenly spaced grid."""
         cols = [w * 0.25, w * 0.50, w * 0.75]
         rows = [h * 0.30, h * 0.50, h * 0.70]
@@ -71,7 +74,7 @@ class PlasmaGridPlugin(ThemePlugin):
         cp_accent = curses.color_pair(color_pairs.get("accent", 0))
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 # Two-frequency interference + radial wave from center
                 v = (math.sin(x / 8.0 + f * 0.04) * math.sin(y / 5.0 + f * 0.03)
                      + math.sin(math.sqrt((x - w * 0.5) ** 2 + (y - h * 0.5) ** 2) / 7.0 - f * 0.05))
@@ -195,7 +198,7 @@ class DeepSignalPlugin(ThemePlugin):
     _CHARS = " ·:+"
 
     def build_nodes(self, w: int, h: int, cx: float, cy: float,
-                    count: int, rng) -> List[Tuple[float, float]]:
+                    count: int, rng) -> list[tuple[float, float]]:
         """Hexagonal ring of 6 signal nodes."""
         r_x = w * 0.28
         r_y = h * 0.28
@@ -233,7 +236,7 @@ class DeepSignalPlugin(ThemePlugin):
         cp_base = curses.color_pair(color_pairs.get("base", 0)) | curses.A_DIM
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 # Slow overlapping sine drift — very low frequency, soft movement
                 v = (math.sin((x + f * 0.3) / 16.0) * math.cos((y + f * 0.2) / 13.0)
                      + math.sin((x * 0.6 - y * 0.4) / 20.0 + f * 0.015))

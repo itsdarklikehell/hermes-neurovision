@@ -3,8 +3,6 @@
 import os
 import tempfile
 
-
-
 # ── sources/mcp.py ───────────────────────────────────────────────────
 
 def test_mcp_source_import():
@@ -130,8 +128,9 @@ def test_checkpoints_source_detects_rollback(tmp_path):
 
 def test_export_format_version_1_1():
     """Export now produces format_version 1.1."""
-    from hermes_neurovision.export import export_theme
     import json
+
+    from hermes_neurovision.export import export_theme
     with tempfile.NamedTemporaryFile(suffix=".hvtheme", delete=False) as f:
         path = f.name
     try:
@@ -149,8 +148,9 @@ def test_export_format_version_1_1():
 
 def test_export_has_new_metadata():
     """Export includes hermes_agent_version and min_api_version."""
-    from hermes_neurovision.export import export_theme
     import json
+
+    from hermes_neurovision.export import export_theme
     with tempfile.NamedTemporaryFile(suffix=".hvtheme", delete=False) as f:
         path = f.name
     try:
@@ -170,9 +170,10 @@ def test_export_has_new_metadata():
 
 def test_export_uses_dynamic_version():
     """Export uses __version__ not hardcoded string."""
-    from hermes_neurovision.export import export_theme
-    from hermes_neurovision import __version__
     import json
+
+    from hermes_neurovision import __version__
+    from hermes_neurovision.export import export_theme
     with tempfile.NamedTemporaryFile(suffix=".hvtheme", delete=False) as f:
         path = f.name
     try:

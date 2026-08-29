@@ -1,10 +1,10 @@
 """Tests for Phase 4: Post-Processing Pipeline."""
 
 import curses
-import unittest.mock as mock
+from unittest import mock
 
-from hermes_neurovision.renderer import FrameBuffer
 from hermes_neurovision import postfx
+from hermes_neurovision.renderer import FrameBuffer
 
 
 def _make_buf(w=20, h=10):

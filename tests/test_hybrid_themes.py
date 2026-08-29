@@ -1,9 +1,9 @@
 """Tests for hybrid themes — use draw_background() + nodes together."""
-import unittest.mock as mock
+from unittest import mock
 
+from hermes_neurovision.renderer import Renderer
 from hermes_neurovision.scene import ThemeState
 from hermes_neurovision.themes import build_theme_config
-from hermes_neurovision.renderer import Renderer
 
 
 def _make_state(theme_name):

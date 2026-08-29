@@ -9,7 +9,6 @@ from __future__ import annotations
 import curses
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 from hermes_neurovision.themes import ThemeConfig, build_theme_config
 
@@ -18,7 +17,7 @@ from hermes_neurovision.themes import ThemeConfig, build_theme_config
 CUSTOM_DIR = Path.home() / ".hermes" / "neurovision" / "custom_themes"
 
 # Available curses colors for palette editing
-_CURSES_COLORS: List[Tuple[str, int]] = [
+_CURSES_COLORS: list[tuple[str, int]] = [
     ("BLACK",   curses.COLOR_BLACK),
     ("RED",     curses.COLOR_RED),
     ("GREEN",   curses.COLOR_GREEN),
@@ -50,7 +49,7 @@ def _color_code(name: str) -> int:
 # ── Config sliders ────────────────────────────────────────────────────────────
 
 # (label, config_attr, min, max, step, format_str)
-_CONFIG_SLIDERS: List[Tuple[str, str, float, float, float, str]] = [
+_CONFIG_SLIDERS: list[tuple[str, str, float, float, float, str]] = [
     ("Background Density", "background_density", 0.0, 3.0, 0.05, ".2f"),
     ("Star Drift",         "star_drift",         0.0, 2.0, 0.05, ".2f"),
     ("Node Jitter",        "node_jitter",        0.0, 5.0, 0.1,  ".1f"),
@@ -85,7 +84,7 @@ class ThemeEditor:
         self.active: bool = False
         self.page: int = 0
         self.selected_index: int = 0
-        self._config: Optional[ThemeConfig] = None
+        self._config: ThemeConfig | None = None
         self._original_name: str = ""
         self._custom_title: str = ""
         self._custom_accent: str = ""
@@ -519,7 +518,7 @@ class ThemeEditor:
         return row
 
 
-def load_custom_config(theme_name: str) -> Optional[Dict]:
+def load_custom_config(theme_name: str) -> dict | None:
     """Load custom config overrides for a theme if they exist.
 
     Returns dict of overrides or None.

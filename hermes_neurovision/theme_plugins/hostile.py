@@ -76,7 +76,8 @@ class NoxiousFumesPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "error" or event_kind == "crash" or event_kind == "threat_blocked":
             return Reaction(element=ReactiveElement.SHATTER, intensity=1.0,
                            origin=(0.5, 0.5), color_key="warning", duration=2.5)
@@ -299,7 +300,8 @@ class MazeRunnerPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "git_commit" or event_kind == "file_edit" or event_kind == "browser_navigate":
             return Reaction(element=ReactiveElement.TRAIL, intensity=0.8,
                            origin=(random.random(), random.random()), color_key="bright", duration=2.0)

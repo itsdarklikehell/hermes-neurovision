@@ -98,6 +98,7 @@ class ClockworkPlugin(ThemePlugin):
 
     def draw_extras(self, stdscr, state, color_pairs):
         import curses
+
         from hermes_neurovision.ascii_art import CLOCK_FACE
         
         frame = getattr(state, "frame", 0)
@@ -152,7 +153,8 @@ class ClockworkPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.7,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)
@@ -248,7 +250,8 @@ class CoralReefPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
                            origin=(random.random(), random.random()), color_key="bright", duration=3.0)
@@ -362,7 +365,8 @@ class AntColonyPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "git_commit" or event_kind == "file_edit" or event_kind == "browser_navigate":
             return Reaction(element=ReactiveElement.TRAIL, intensity=0.8,
                            origin=(random.random(), random.random()), color_key="bright", duration=2.0)
@@ -506,7 +510,8 @@ class SatelliteOrbitPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)

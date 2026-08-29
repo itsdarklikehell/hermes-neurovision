@@ -4,11 +4,15 @@ from __future__ import annotations
 
 import curses
 import math
-
 import random
-from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, SpecialEffect
-from hermes_neurovision.theme_plugins import register
 
+from hermes_neurovision.plugin import (
+    Reaction,
+    ReactiveElement,
+    SpecialEffect,
+    ThemePlugin,
+)
+from hermes_neurovision.theme_plugins import register
 
 # ---------------------------------------------------------------------------
 # Shared color helper — phase-shifted so colors sweep dynamically over time
@@ -61,7 +65,7 @@ class SynapticPlasmaPlugin(ThemePlugin):
 
         for y in range(1, h - 1):
             dy = y - cy2
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = x - cx2
                 dist = math.sqrt((dx * dx) / 2.0 + dy * dy)
                 v = (
@@ -191,7 +195,7 @@ class OraclePlugin(ThemePlugin):
         hue_base = (f * 0.004) % 1.0
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = (x - hw) / max(hw, 1.0)
                 ny = (y - hh) / max(hh, 1.0)
                 dist = math.sqrt(nx * nx + ny * ny * 2.0)
@@ -333,7 +337,7 @@ class CellularCortexPlugin(ThemePlugin):
         mods = self._MODULES
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = x / max(w, 1)
                 ny = y / max(h, 1)
 
@@ -379,10 +383,8 @@ class CellularCortexPlugin(ThemePlugin):
             pulse = 0.4 + 0.6 * abs(math.sin(f * 0.06 + i * 0.7))
             ax = int(mx * w)
             ay = int(my * h)
-            if ay < 1:
-                ay = 1
-            if ay > h - 2:
-                ay = h - 2
+            ay = max(ay, 1)
+            ay = min(ay, h - 2)
             ax = max(0, min(ax, w - 2))
             label = icon + name
             if pulse > 0.6:
@@ -583,7 +585,7 @@ class ReactionFieldPlugin(ThemePlugin):
         hue_base = (state.frame * 0.003) % 1.0
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 sx = x * sw // max(w, 1)
                 sy = y * sh // max(h, 1)
                 sx = max(0, min(sx, sw - 1))
@@ -935,7 +937,7 @@ class LifeColonyPlugin(ThemePlugin):
             gy = y - 1
             if gy >= gh:
                 continue
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 gx = x
                 if gx >= gw:
                     continue
@@ -982,7 +984,7 @@ class AuroraBandsPlugin(ThemePlugin):
         bands = self._BANDS
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 max_v = 0.0
                 winning_key = "base"
                 winning_band = 0
@@ -1037,7 +1039,8 @@ class AuroraBandsPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_start" or event_kind == "llm_end":
             return Reaction(element=ReactiveElement.WAVE, intensity=0.8,
                            origin=(0.0, 0.5), color_key="bright", duration=2.5)
@@ -1117,7 +1120,7 @@ class WaveformScopePlugin(ThemePlugin):
         for ci, (y_ratio, color_key, label) in enumerate(channels):
             center_y = y_ratio * h
             # Draw waveform — color drifts along x driven by wave phase
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 x_norm = x * 8.0 / max(w, 1)
                 vy = self._wave(ci, x_norm, f)
                 py = int(round(center_y - vy * h * 0.07))
@@ -1135,10 +1138,8 @@ class WaveformScopePlugin(ThemePlugin):
                         pass
             # Draw label in the channel's nominal color (stable reference)
             label_y = max(1, int(center_y) - 1)
-            if label_y < 1:
-                label_y = 1
-            if label_y > h - 2:
-                label_y = h - 2
+            label_y = max(label_y, 1)
+            label_y = min(label_y, h - 2)
             label_attr = curses.color_pair(color_pairs.get(color_key, 1)) | curses.A_BOLD
             try:
                 stdscr.addstr(label_y, 2, label, label_attr)
@@ -1157,7 +1158,8 @@ class WaveformScopePlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_chunk" or event_kind == "llm_start":
             return Reaction(element=ReactiveElement.STREAM, intensity=0.7,
                            origin=(0.0, 0.5), color_key="accent", duration=0.8)
@@ -1270,7 +1272,7 @@ class LissajousMindPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)
@@ -1320,7 +1322,7 @@ class PulseMatrixPlugin(ThemePlugin):
         cy2 = h / 2.0
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = (x - cx2) / max(cx2, 1.0)
                 dy = (y - cy2) / max(cy2, 1.0)
                 dist = math.sqrt(dx * dx + dy * dy)

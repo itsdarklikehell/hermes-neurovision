@@ -6,18 +6,17 @@ import inspect
 import json
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
-from hermes_neurovision.themes import build_theme_config
-from hermes_neurovision.theme_plugins import get_plugin
 from hermes_neurovision import __version__
+from hermes_neurovision.theme_plugins import get_plugin
+from hermes_neurovision.themes import build_theme_config
 
 
 def export_theme(
     theme_name: str,
-    output_path: Optional[str] = None,
-    author: Optional[str] = None,
-    description: Optional[str] = None
+    output_path: str | None = None,
+    author: str | None = None,
+    description: str | None = None
 ) -> Path:
     """
     Export a theme to .hvtheme file.

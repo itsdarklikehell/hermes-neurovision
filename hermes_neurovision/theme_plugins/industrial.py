@@ -95,7 +95,8 @@ class LiquidMetalPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "memory_save" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
                            origin=(random.random(), random.random()), color_key="bright", duration=2.5)
@@ -261,7 +262,8 @@ class FactoryFloorPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_chunk" or event_kind == "llm_start":
             return Reaction(element=ReactiveElement.STREAM, intensity=0.6,
                            origin=(0.0, random.random()), color_key="accent", duration=0.8)
@@ -432,7 +434,8 @@ class PipeHellPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_chunk" or event_kind == "llm_start":
             return Reaction(element=ReactiveElement.STREAM, intensity=0.7,
                            origin=(0.0, random.random()), color_key="accent", duration=1.0)
@@ -564,7 +567,8 @@ class OilSlickPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=0.8,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)

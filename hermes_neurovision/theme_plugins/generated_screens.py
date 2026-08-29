@@ -1,9 +1,9 @@
 """Generated theme plugin screens for hermes-neurovision."""
+import curses
 import math
 import random
-import curses
 
-from hermes_neurovision.plugin import ThemePlugin, ReactiveElement, Reaction
+from hermes_neurovision.plugin import Reaction, ReactiveElement, ThemePlugin
 from hermes_neurovision.theme_plugins import register
 
 
@@ -115,7 +115,7 @@ class QuantumFoamPlugin(ThemePlugin):
         n_wc = len(wave_chars) - 1
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx, dy = (x - cx) / (w * 0.4), (y - cy) / (h * 0.4)
                 # Four interfering quantum waves
                 r1 = math.sqrt((dx + 0.3) ** 2 * 2 + (dy + 0.2) ** 2)

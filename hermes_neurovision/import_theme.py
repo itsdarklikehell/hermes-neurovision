@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any
 
 
 @dataclass
@@ -38,10 +38,9 @@ class Version:
 
 class IncompatibleVersionError(Exception):
     """Raised when theme format version is incompatible."""
-    pass
 
 
-def import_theme(theme_path: str, preview_only: bool = False, trust: bool = False) -> Dict[str, Any]:
+def import_theme(theme_path: str, preview_only: bool = False, trust: bool = False) -> dict[str, Any]:
     """
     Import theme from .hvtheme file.
     
@@ -186,7 +185,7 @@ def import_theme(theme_path: str, preview_only: bool = False, trust: bool = Fals
     }
 
 
-def _migrate_v0_to_v1(data: Dict[str, Any]) -> Dict[str, Any]:
+def _migrate_v0_to_v1(data: dict[str, Any]) -> dict[str, Any]:
     """Migrate pre-release format to v1.0."""
     return {
         "format_version": "1.0",
@@ -207,7 +206,7 @@ def _migrate_v0_to_v1(data: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def _migrate_v1_0_to_v1_1(data: Dict[str, Any]) -> Dict[str, Any]:
+def _migrate_v1_0_to_v1_1(data: dict[str, Any]) -> dict[str, Any]:
     """Migrate v1.0 format to v1.1 by adding missing metadata fields."""
     data["format_version"] = "1.1"
     metadata = data.get("metadata", {})
@@ -219,7 +218,7 @@ def _migrate_v1_0_to_v1_1(data: Dict[str, Any]) -> Dict[str, Any]:
     return data
 
 
-def _register_theme_config(theme_name: str, title: str, config_dict: Dict[str, Any]) -> None:
+def _register_theme_config(theme_name: str, title: str, config_dict: dict[str, Any]) -> None:
     """Register theme config at runtime."""
     from hermes_neurovision.themes import ThemeConfig
     
@@ -263,9 +262,10 @@ def _register_theme_config(theme_name: str, title: str, config_dict: Dict[str, A
 def _register_plugin(theme_name: str, plugin_code: str, class_name: str) -> None:
     """Register plugin at runtime."""
     # Import necessary items for plugin code
+    import math
+
     from hermes_neurovision.plugin import ThemePlugin
     from hermes_neurovision.scene import Particle
-    import math
     
     # Execute plugin code in namespace with required imports
     namespace = {
@@ -289,7 +289,7 @@ def _register_plugin(theme_name: str, plugin_code: str, class_name: str) -> None
     theme_plugins._runtime_plugins[theme_name] = plugin_instance
 
 
-def _update_registry(theme_name: str, metadata: Dict[str, Any], has_plugin: bool, source_path: str) -> None:
+def _update_registry(theme_name: str, metadata: dict[str, Any], has_plugin: bool, source_path: str) -> None:
     """Update theme registry."""
     registry_path = Path.home() / ".hermes" / "vision" / "theme_registry.json"
     

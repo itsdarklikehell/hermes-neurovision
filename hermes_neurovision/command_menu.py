@@ -7,17 +7,14 @@ Provides access to all neurovision features from a single menu.
 from __future__ import annotations
 
 import curses
-from typing import TYPE_CHECKING, Callable, List, Optional
-
-if TYPE_CHECKING:
-    pass
+from collections.abc import Callable
 
 
 class MenuItem:
     """A single menu item with label, optional shortcut hint, and action."""
 
     def __init__(self, label: str, shortcut: str = "", action: str = "",
-                 toggle_state: Optional[Callable[[], bool]] = None) -> None:
+                 toggle_state: Callable[[], bool] | None = None) -> None:
         self.label = label
         self.shortcut = shortcut
         self.action = action  # action key returned when selected
@@ -34,8 +31,8 @@ class CommandMenu:
     def __init__(self) -> None:
         self.active: bool = False
         self.selected_index: int = 0
-        self._items: List[MenuItem] = []
-        self._pending_action: Optional[str] = None
+        self._items: list[MenuItem] = []
+        self._pending_action: str | None = None
         self._mode_label: str = ""
 
     def configure(self, mode: str, **toggle_getters) -> None:
@@ -98,7 +95,7 @@ class CommandMenu:
     def close(self) -> None:
         self.active = False
 
-    def pop_action(self) -> Optional[str]:
+    def pop_action(self) -> str | None:
         """Return and clear any pending action from menu selection."""
         action = self._pending_action
         self._pending_action = None

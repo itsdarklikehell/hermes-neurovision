@@ -450,6 +450,7 @@ class BeachLighthousePlugin(ThemePlugin):
 
     def draw_extras(self, stdscr, state, color_pairs):
         import curses
+
         from hermes_neurovision.ascii_art import LIGHTHOUSE
         h = state.height
         w = state.width

@@ -2,8 +2,11 @@
 
 from hermes_neurovision.command_menu import CommandMenu, MenuItem
 from hermes_neurovision.theme_editor import (
-    ThemeEditor, apply_custom_overrides, load_custom_config,
-    _color_name, _color_code,
+    ThemeEditor,
+    _color_code,
+    _color_name,
+    apply_custom_overrides,
+    load_custom_config,
 )
 from hermes_neurovision.themes import build_theme_config
 

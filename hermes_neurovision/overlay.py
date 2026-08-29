@@ -17,13 +17,14 @@ import signal
 import struct
 import sys
 import time
-from typing import TYPE_CHECKING, Optional, Sequence
+from collections.abc import Sequence
+from typing import TYPE_CHECKING
 
-from hermes_neurovision.compositor import FadeConfig, FadeCompositor
-from hermes_neurovision.vt import VTScreen
-from hermes_neurovision.themes import build_theme_config, THEMES, FRAME_DELAY
-from hermes_neurovision.scene import ThemeState
+from hermes_neurovision.compositor import FadeCompositor, FadeConfig
 from hermes_neurovision.renderer import Renderer
+from hermes_neurovision.scene import ThemeState
+from hermes_neurovision.themes import FRAME_DELAY, THEMES, build_theme_config
+from hermes_neurovision.vt import VTScreen
 
 if TYPE_CHECKING:
     from hermes_neurovision.bridge import Bridge
@@ -102,7 +103,7 @@ class GalleryDelegate(SceneDelegate):
 class LiveDelegate(SceneDelegate):
     """Polls events, applies triggers. Single theme."""
 
-    def __init__(self, poller: "EventPoller", bridge: "Bridge") -> None:
+    def __init__(self, poller: EventPoller, bridge: Bridge) -> None:
         self.poller = poller
         self.bridge = bridge
         self._poll_counter = 0
@@ -122,13 +123,13 @@ class LiveDelegate(SceneDelegate):
 class DaemonDelegate(SceneDelegate):
     """Gallery when idle, switches to live on real events."""
 
-    def __init__(self, theme_seconds: float, poller: "EventPoller", bridge: "Bridge",
+    def __init__(self, theme_seconds: float, poller: EventPoller, bridge: Bridge,
                  idle_threshold: float = 30.0) -> None:
         self.mode = "gallery"
         self.idle_threshold = idle_threshold
         self._gallery = GalleryDelegate(theme_seconds)
         self._live = LiveDelegate(poller, bridge)
-        self._last_event_time: Optional[float] = None
+        self._last_event_time: float | None = None
 
     def reset_timer(self) -> None:
         self._gallery.reset_timer()
@@ -179,14 +180,14 @@ class OverlayApp:
 
     def __init__(
         self,
-        stdscr: "curses._CursesWindow",
+        stdscr: curses._CursesWindow,
         child_cmd: list[str],
         themes: Sequence[str],
         theme_seconds: float,
         mode: str,
         fade_config: FadeConfig,
-        poller: Optional["EventPoller"] = None,
-        bridge: Optional["Bridge"] = None,
+        poller: EventPoller | None = None,
+        bridge: Bridge | None = None,
     ) -> None:
         self.stdscr = stdscr
         self.child_cmd = child_cmd
@@ -204,11 +205,11 @@ class OverlayApp:
         self.prefix_pending = False
         self.current_mode = mode
         self.theme_index = 0
-        self.child_pid: Optional[int] = None
-        self.pty_master: Optional[int] = None
+        self.child_pid: int | None = None
+        self.pty_master: int | None = None
         self.child_exited = False
-        self.exit_code: Optional[int] = None
-        self._exit_timer: Optional[float] = None
+        self.exit_code: int | None = None
+        self._exit_timer: float | None = None
 
         # VT screen (sized to terminal, -1 for status bar)
         h, w = stdscr.getmaxyx()
@@ -221,8 +222,8 @@ class OverlayApp:
             self.poller._sources.append(vt_source.poll)
 
         # Performance mode — enabled by default for smooth overlay experience
-        from hermes_neurovision.tune import TuneSettings
         from hermes_neurovision.app import _apply_performance_mode
+        from hermes_neurovision.tune import TuneSettings
         self.tune = TuneSettings()
         _apply_performance_mode(self.tune, True)
 

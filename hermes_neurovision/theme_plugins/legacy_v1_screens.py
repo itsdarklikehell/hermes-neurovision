@@ -19,7 +19,6 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import List, Optional
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -33,7 +32,6 @@ from hermes_neurovision.theme_plugins.attractors import (
     _rainbow_pair,
     _rainbow_pair_angle,
 )
-
 
 # ---------------------------------------------------------------------------
 # _safe() helper (originally in spectacular.py)
@@ -71,7 +69,7 @@ class LegacySynapticPlasmaPlugin(ThemePlugin):
 
         for y in range(1, h - 1):
             dy = y - cy2
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = x - cx2
                 dist = math.sqrt((dx * dx) / 2.0 + dy * dy)
                 v = (
@@ -115,7 +113,7 @@ class LegacyOraclePlugin(ThemePlugin):
         hue_base = (f * 0.004) % 1.0
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = (x - hw) / max(hw, 1.0)
                 ny = (y - hh) / max(hh, 1.0)
                 dist = math.sqrt(nx * nx + ny * ny * 2.0)
@@ -173,7 +171,7 @@ class LegacyCellularCortexPlugin(ThemePlugin):
         mods = self._MODULES
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = x / max(w, 1)
                 ny = y / max(h, 1)
 
@@ -215,10 +213,8 @@ class LegacyCellularCortexPlugin(ThemePlugin):
             pulse = 0.4 + 0.6 * abs(math.sin(f * 0.06 + i * 0.7))
             ax = int(mx * w)
             ay = int(my * h)
-            if ay < 1:
-                ay = 1
-            if ay > h - 2:
-                ay = h - 2
+            ay = max(ay, 1)
+            ay = min(ay, h - 2)
             ax = max(0, min(ax, w - 2))
             label = icon + name
             if pulse > 0.6:
@@ -310,7 +306,7 @@ class LegacyLifeColonyPlugin(ThemePlugin):
             gy = y - 1
             if gy >= gh:
                 continue
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 gx = x
                 if gx >= gw:
                     continue
@@ -353,7 +349,7 @@ class LegacyPulseMatrixPlugin(ThemePlugin):
         cy2 = h / 2.0
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = (x - cx2) / max(cx2, 1.0)
                 dy = (y - cy2) / max(cy2, 1.0)
                 dist = math.sqrt(dx * dx + dy * dy)
@@ -409,7 +405,7 @@ class LegacyBarnsleyFernPlugin(ThemePlugin):
     _ORDER = ["fern", "maple", "dragon", "spiral"]
 
     def __init__(self):
-        self._grid: Optional[List[List[float]]] = None
+        self._grid: list[list[float]] | None = None
         self._px    = 0.0
         self._py    = 0.0
         self._rng   = random.Random(99)
@@ -485,7 +481,7 @@ class LegacyBarnsleyFernPlugin(ThemePlugin):
 
         for y in range(1, h - 1):
             row = grid[y]
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 v = row[x] * decay
                 row[x] = v
                 idx = max(0, min(n_chars - 1, int(v * (n_chars - 1))))
@@ -520,8 +516,8 @@ class LegacyFlowFieldPlugin(ThemePlugin):
     _MAX_PARTICLES = 200
 
     def __init__(self):
-        self._trail: Optional[List[List[float]]] = None
-        self._particles: List[dict] = []
+        self._trail: list[list[float]] | None = None
+        self._particles: list[dict] = []
         self._rng  = random.Random(55)
         self._w = self._h = 0
 
@@ -607,7 +603,7 @@ class LegacyFlowFieldPlugin(ThemePlugin):
         decay  = 0.90 - 0.05 * intensity
         for y in range(1, h - 1):
             row = trail[y]
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 v = row[x] * decay
                 row[x] = v
 
@@ -717,7 +713,7 @@ class LegacyPlasmaRainbowPlugin(ThemePlugin):
 
         for y in range(1, h - 1):
             yf = y / max(h, 1)
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 xf = x / max(w, 1)
                 v1 = math.sin(xf * 7.0 + t)
                 v2 = math.sin(yf * 5.0 - t * 0.7)

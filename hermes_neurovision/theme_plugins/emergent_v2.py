@@ -17,18 +17,16 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import Dict, List, Optional, Tuple
 
 from hermes_neurovision.plugin import (
-    ThemePlugin,
-    ReactiveElement,
     Reaction,
+    ReactiveElement,
     SpecialEffect,
+    ThemePlugin,
 )
-from hermes_neurovision.sound import SoundCue
 from hermes_neurovision.scene import Particle
+from hermes_neurovision.sound import SoundCue
 from hermes_neurovision.theme_plugins import register
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -66,7 +64,7 @@ class DNAHelixPlugin(ThemePlugin):
         self._base_pairs = "ATCGATCGTAGCATCG"
 
     # -- emergent --
-    def wave_config(self) -> Optional[Dict]:
+    def wave_config(self) -> dict | None:
         return {
             "speed": 0.25,
             "damping": 0.97,
@@ -77,7 +75,7 @@ class DNAHelixPlugin(ThemePlugin):
 
     # -- postfx --
     def warp_field(self, x: int, y: int, w: int, h: int,
-                   frame: int, intensity: float) -> Tuple[int, int]:
+                   frame: int, intensity: float) -> tuple[int, int]:
         cx = w / 2
         dist_x = abs(x - cx)
         if dist_x < w * 0.15:
@@ -93,12 +91,12 @@ class DNAHelixPlugin(ThemePlugin):
     def glow_radius(self) -> int:
         return 1
 
-    def decay_sequence(self) -> Optional[str]:
+    def decay_sequence(self) -> str | None:
         return "●◉○◦·. "
 
     # -- node layout: helix --
     def build_nodes(self, w: int, h: int, cx: float, cy: float,
-                    count: int, rng) -> List[Tuple[float, float]]:
+                    count: int, rng) -> list[tuple[float, float]]:
         nodes = []
         n_rungs = min(count // 2, 16)
         spacing = max(1, (h - 4) / max(1, n_rungs - 1))
@@ -198,7 +196,7 @@ class DNAHelixPlugin(ThemePlugin):
         return "bright"
 
     # -- reactive --
-    def react(self, event_kind: str, data: Dict) -> Optional[Reaction]:
+    def react(self, event_kind: str, data: dict) -> Reaction | None:
         if event_kind == "tool_call":
             return Reaction(
                 element=ReactiveElement.RIPPLE,
@@ -270,7 +268,7 @@ class PendulumWavesPlugin(ThemePlugin):
         super().__init__()
 
     # -- emergent --
-    def boids_config(self) -> Optional[Dict]:
+    def boids_config(self) -> dict | None:
         return {
             "n_boids": 40,
             "sep_dist": 2.5,
@@ -283,14 +281,14 @@ class PendulumWavesPlugin(ThemePlugin):
         return "background"
 
     # -- postfx --
-    def symmetry(self) -> Optional[str]:
+    def symmetry(self) -> str | None:
         return "mirror_x"
 
     def glow_radius(self) -> int:
         return 1
 
     def force_points(self, w: int, h: int, frame: int,
-                     intensity: float) -> List[Tuple[int, int, float, float]]:
+                     intensity: float) -> list[tuple[int, int, float, float]]:
         # Place vortex attractors at the bob positions of 3 pendulums
         points = []
         n = self._N_PENDULUMS
@@ -316,7 +314,7 @@ class PendulumWavesPlugin(ThemePlugin):
         return "rays"
 
     # -- reactive --
-    def react(self, event_kind: str, data: Dict) -> Optional[Reaction]:
+    def react(self, event_kind: str, data: dict) -> Reaction | None:
         if event_kind in ("llm_start", "llm_end"):
             return Reaction(
                 element=ReactiveElement.WAVE,
@@ -459,7 +457,7 @@ class KaleidoscopePlugin(ThemePlugin):
         self._angle = 0.0
 
     # -- emergent --
-    def physarum_config(self) -> Optional[Dict]:
+    def physarum_config(self) -> dict | None:
         return {
             "n_agents": 120,
             "sensor_dist": 4,
@@ -472,14 +470,14 @@ class KaleidoscopePlugin(ThemePlugin):
         return "background"
 
     # -- postfx --
-    def symmetry(self) -> Optional[str]:
+    def symmetry(self) -> str | None:
         return "rotate_4"
 
     def glow_radius(self) -> int:
         return 2
 
     def render_mask(self, w: int, h: int, frame: int,
-                    intensity: float) -> Optional[List[List[bool]]]:
+                    intensity: float) -> list[list[bool]] | None:
         """Slow-rotating diamond aperture — distinct from round kaleidoscopes.
 
         The diamond itself rotates one full turn every ~1200 frames so the
@@ -511,7 +509,7 @@ class KaleidoscopePlugin(ThemePlugin):
         return []
 
     # -- reactive --
-    def react(self, event_kind: str, data: Dict) -> Optional[Reaction]:
+    def react(self, event_kind: str, data: dict) -> Reaction | None:
         element_map = {
             "tool_call": (ReactiveElement.RIPPLE, 0.7, "accent", 2.0),
             "llm_start": (ReactiveElement.STREAM, 0.5, "soft", 3.0),
@@ -551,7 +549,7 @@ class KaleidoscopePlugin(ThemePlugin):
         n_chars = len(chars) - 1
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = (x - cx) / 2.0  # aspect correction
                 dy = y - cy
                 dist = math.sqrt(dx * dx + dy * dy)
@@ -617,12 +615,12 @@ class ElectricStormPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._lightning_bolts: List[List[Tuple[int, int]]] = []
+        self._lightning_bolts: list[list[tuple[int, int]]] = []
         self._bolt_timer = 0
         self._rng = random.Random(77)
 
     # -- emergent --
-    def neural_field_config(self) -> Optional[Dict]:
+    def neural_field_config(self) -> dict | None:
         return {
             "threshold": 3,
             "fire_duration": 2,
@@ -634,7 +632,7 @@ class ElectricStormPlugin(ThemePlugin):
 
     # -- postfx --
     def warp_field(self, x: int, y: int, w: int, h: int,
-                   frame: int, intensity: float) -> Tuple[int, int]:
+                   frame: int, intensity: float) -> tuple[int, int]:
         # Wind-driven horizontal warp — stronger near top
         wind_strength = intensity * 1.2 * (1.0 - y / max(h, 1))
         dx = int(wind_strength * math.sin(frame * 0.05 + y * 0.15))
@@ -647,7 +645,7 @@ class ElectricStormPlugin(ThemePlugin):
     def glow_radius(self) -> int:
         return 2
 
-    def decay_sequence(self) -> Optional[str]:
+    def decay_sequence(self) -> str | None:
         return "█▓▒░·. "
 
     # -- layout: cloud nodes across the top --
@@ -709,7 +707,7 @@ class ElectricStormPlugin(ThemePlugin):
         return (0.35, 0.25)
 
     # -- reactive --
-    def react(self, event_kind: str, data: Dict) -> Optional[Reaction]:
+    def react(self, event_kind: str, data: dict) -> Reaction | None:
         if event_kind == "tool_call":
             return Reaction(
                 element=ReactiveElement.SPARK,
@@ -739,7 +737,7 @@ class ElectricStormPlugin(ThemePlugin):
         return None
 
     def palette_shift(self, trigger_effect, intensity: float,
-                      base_palette) -> Optional[Tuple]:
+                      base_palette) -> tuple | None:
         if trigger_effect == "error":
             return (
                 curses.COLOR_WHITE,
@@ -749,7 +747,7 @@ class ElectricStormPlugin(ThemePlugin):
             )
         return None
 
-    def special_effects(self) -> List[SpecialEffect]:
+    def special_effects(self) -> list[SpecialEffect]:
         return [
             SpecialEffect(
                 name="thunder-flash",
@@ -773,7 +771,7 @@ class ElectricStormPlugin(ThemePlugin):
                 for x in range(0, w - 1, 3):
                     _safe(stdscr, y, x, "▓", bright_attr)
 
-    def sound_cues(self) -> Dict[str, SoundCue]:
+    def sound_cues(self) -> dict[str, SoundCue]:
         return {
             "error": SoundCue(
                 name="thunder",
@@ -825,8 +823,8 @@ class ElectricStormPlugin(ThemePlugin):
 
         # Cloud layer — dense dark blocks at top
         cloud_h = max(2, int(h * 0.18))
-        for y in range(0, cloud_h):
-            for x in range(0, w - 1):
+        for y in range(cloud_h):
+            for x in range(w - 1):
                 v = (math.sin(x * 0.15 + f * 0.02 + y * 0.3)
                      + math.sin(x * 0.08 - f * 0.015) + 1.0) / 3.0
                 if v > 0.4:
@@ -902,20 +900,20 @@ class CoralGrowthPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._branches: List[Dict] = []
+        self._branches: list[dict] = []
         self._growth_timer = 0
         self._rng = random.Random(42)
         self._max_branches = 80
 
     # -- emergent: dual systems --
-    def reaction_diffusion_config(self) -> Optional[Dict]:
+    def reaction_diffusion_config(self) -> dict | None:
         return {
             "feed": 0.040,
             "kill": 0.062,
             "update_interval": 2,
         }
 
-    def automaton_config(self) -> Optional[Dict]:
+    def automaton_config(self) -> dict | None:
         return {
             "rule": "cyclic",
             "density": 0.3,
@@ -935,7 +933,7 @@ class CoralGrowthPlugin(ThemePlugin):
     def glow_radius(self) -> int:
         return 1
 
-    def decay_sequence(self) -> Optional[str]:
+    def decay_sequence(self) -> str | None:
         return "█▓▒░·. "
 
     # -- layout: base anchor nodes --
@@ -972,7 +970,7 @@ class CoralGrowthPlugin(ThemePlugin):
         return (0.20, 0.18)
 
     # -- reactive --
-    def react(self, event_kind: str, data: Dict) -> Optional[Reaction]:
+    def react(self, event_kind: str, data: dict) -> Reaction | None:
         if event_kind == "memory_save" or event_kind == "skill_create":
             return Reaction(
                 element=ReactiveElement.BLOOM,
@@ -1008,7 +1006,7 @@ class CoralGrowthPlugin(ThemePlugin):
             )
         return None
 
-    def special_effects(self) -> List[SpecialEffect]:
+    def special_effects(self) -> list[SpecialEffect]:
         return [
             SpecialEffect(
                 name="growth-surge",
@@ -1125,7 +1123,7 @@ class CoralGrowthPlugin(ThemePlugin):
 
         # Seafloor base
         if h > 4:
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 v = math.sin(x * 0.2 + f * 0.01) * 0.5 + 0.5
                 ch = "▄" if v > 0.6 else "▁"
                 _safe(stdscr, h - 2, x, ch, soft_attr)

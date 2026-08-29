@@ -1,18 +1,19 @@
 """Gallery and Live apps for Hermes Vision."""
 
 from __future__ import annotations
+
 import curses
 import random
 import time
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
-from hermes_neurovision.themes import build_theme_config, FRAME_DELAY, LEGACY_THEMES
-from hermes_neurovision.scene import ThemeState
-from hermes_neurovision.renderer import Renderer
-from hermes_neurovision.tune import TuneSettings, TuneOverlay
-from hermes_neurovision.debug_panel import DebugPanel
 from hermes_neurovision.command_menu import CommandMenu
+from hermes_neurovision.debug_panel import DebugPanel
+from hermes_neurovision.renderer import Renderer
+from hermes_neurovision.scene import ThemeState
 from hermes_neurovision.theme_editor import ThemeEditor, apply_custom_overrides
+from hermes_neurovision.themes import FRAME_DELAY, LEGACY_THEMES, build_theme_config
+from hermes_neurovision.tune import TuneOverlay, TuneSettings
 
 
 def _toggle_native_fullscreen() -> None:
@@ -37,7 +38,7 @@ def _toggle_native_fullscreen() -> None:
         pass
 
 
-def _apply_performance_mode(tune: 'TuneSettings', perf_on: bool) -> None:
+def _apply_performance_mode(tune: TuneSettings, perf_on: bool) -> None:
     """Toggle performance mode — disable expensive effects for smoother rendering.
 
     When perf_on=True:  disable postfx, emergent, particles, symmetry, reactive
@@ -78,7 +79,7 @@ def _apply_performance_mode(tune: 'TuneSettings', perf_on: bool) -> None:
 
 
 class GalleryApp:
-    def __init__(self, stdscr: "curses._CursesWindow", themes: Sequence[str], theme_seconds: float, end_after: Optional[float], include_legacy: bool = False) -> None:
+    def __init__(self, stdscr: curses._CursesWindow, themes: Sequence[str], theme_seconds: float, end_after: float | None, include_legacy: bool = False) -> None:
         self.stdscr = stdscr
         self._base_themes = list(themes)
         self.include_legacy = include_legacy
@@ -497,7 +498,7 @@ class GalleryApp:
 class LiveApp:
     """Live mode — polls events and maps them to visual triggers."""
 
-    def __init__(self, stdscr: "curses._CursesWindow", theme_name: str, poller, bridge, log_overlay, end_after: Optional[float] = None, show_logs: bool = False, quiet: bool = False) -> None:
+    def __init__(self, stdscr: curses._CursesWindow, theme_name: str, poller, bridge, log_overlay, end_after: float | None = None, show_logs: bool = False, quiet: bool = False) -> None:
         self.stdscr = stdscr
         self.theme_name = theme_name
         self.poller = poller
@@ -729,7 +730,7 @@ class LiveApp:
 class DaemonApp:
     """Daemon mode — gallery when idle, switches to live on events."""
 
-    def __init__(self, stdscr: "curses._CursesWindow", themes: Sequence[str], theme_seconds: float, poller, bridge, log_overlay, show_logs: bool = False, quiet: bool = False) -> None:
+    def __init__(self, stdscr: curses._CursesWindow, themes: Sequence[str], theme_seconds: float, poller, bridge, log_overlay, show_logs: bool = False, quiet: bool = False) -> None:
         self.stdscr = stdscr
         self.themes = list(themes)
         self.theme_seconds = max(1.0, theme_seconds)
@@ -754,13 +755,13 @@ class DaemonApp:
 
         # Mode tracking
         self.mode = "gallery"  # "gallery" or "live"
-        self.last_event_time: Optional[float] = None
+        self.last_event_time: float | None = None
         self.idle_threshold = 30.0  # seconds to wait before returning to gallery
         self.transition_alpha = 0.0  # for visual transitions
 
         # Initialize with gallery state
         self.gallery_state = self._make_gallery_state(self.themes[self.theme_index])
-        self.live_state: Optional[ThemeState] = None
+        self.live_state: ThemeState | None = None
         self.switch_at = time.time() + self.theme_seconds if len(self.themes) > 1 else float("inf")
 
         self._poll_counter = 0
@@ -957,7 +958,7 @@ class DaemonApp:
             self._draw_logs(now)
 
         # Footer
-        footer = f" Q quit  q quiet  m menu  h hide  l logs  e editor"
+        footer = " Q quit  q quiet  m menu  h hide  l logs  e editor"
         try:
             self.stdscr.addstr(h - 1, 1, footer[:max(0, w - 2)], curses.color_pair(2) | curses.A_DIM)
         except curses.error:

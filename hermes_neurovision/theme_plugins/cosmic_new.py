@@ -7,7 +7,6 @@ import math
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
 
-
 # ── Quasar ───────────────────────────────────────────────────────────────────
 
 class QuasarPlugin(ThemePlugin):

@@ -10,6 +10,7 @@ import json
 import os
 import signal
 from unittest.mock import MagicMock, patch
+
 import pytest
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -35,7 +36,7 @@ def tmp_config(tmp_path, monkeypatch):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_load_bg_config_defaults():
-    from hermes_neurovision.bg_mode import load_bg_config, _BG_DEFAULTS
+    from hermes_neurovision.bg_mode import _BG_DEFAULTS, load_bg_config
     cfg = load_bg_config()
     for key in _BG_DEFAULTS:
         assert key in cfg
@@ -50,7 +51,7 @@ def test_load_bg_config_missing_file():
 
 
 def test_save_and_load_bg_config(tmp_config):
-    from hermes_neurovision.bg_mode import save_bg_config, load_bg_config
+    from hermes_neurovision.bg_mode import load_bg_config, save_bg_config
     save_bg_config({"theme": "plasma-grid", "opacity": 0.6})
     cfg = load_bg_config()
     assert cfg["theme"] == "plasma-grid"
@@ -58,7 +59,7 @@ def test_save_and_load_bg_config(tmp_config):
 
 
 def test_save_bg_config_merges_existing(tmp_config):
-    from hermes_neurovision.bg_mode import save_bg_config, load_bg_config
+    from hermes_neurovision.bg_mode import load_bg_config, save_bg_config
     save_bg_config({"theme": "neural-sky"})
     save_bg_config({"opacity": 0.3})
     cfg = load_bg_config()
@@ -82,7 +83,7 @@ def test_save_bg_config_preserves_other_keys(tmp_config):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_write_and_read_pid(tmp_config):
-    from hermes_neurovision.bg_mode import _write_pid, _read_pid
+    from hermes_neurovision.bg_mode import _read_pid, _write_pid
     _write_pid(12345)
     assert _read_pid() == 12345
 
@@ -93,7 +94,7 @@ def test_read_pid_missing_file():
 
 
 def test_clear_pid(tmp_config):
-    from hermes_neurovision.bg_mode import _write_pid, _clear_pid, _read_pid
+    from hermes_neurovision.bg_mode import _clear_pid, _read_pid, _write_pid
     _write_pid(999)
     _clear_pid()
     assert _read_pid() is None
@@ -105,7 +106,7 @@ def test_is_bg_running_no_pid():
 
 
 def test_is_bg_running_stale_pid(tmp_config):
-    from hermes_neurovision.bg_mode import _write_pid, is_bg_running, _read_pid
+    from hermes_neurovision.bg_mode import _read_pid, _write_pid, is_bg_running
     _write_pid(9999999)
     with patch("os.kill", side_effect=ProcessLookupError):
         result = is_bg_running()
@@ -151,7 +152,10 @@ def test_opacity_hint_unknown_terminal():
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_save_and_load_original_opacity(tmp_config):
-    from hermes_neurovision.bg_mode import _save_original_opacity, _load_original_opacity
+    from hermes_neurovision.bg_mode import (
+        _load_original_opacity,
+        _save_original_opacity,
+    )
     _save_original_opacity("iterm2", 0.85)
     result = _load_original_opacity()
     assert result is not None
@@ -166,7 +170,11 @@ def test_load_original_opacity_missing():
 
 
 def test_clear_original_opacity(tmp_config):
-    from hermes_neurovision.bg_mode import _save_original_opacity, _clear_original_opacity, _load_original_opacity
+    from hermes_neurovision.bg_mode import (
+        _clear_original_opacity,
+        _load_original_opacity,
+        _save_original_opacity,
+    )
     _save_original_opacity("kitty", 1.0)
     _clear_original_opacity()
     assert _load_original_opacity() is None
@@ -204,8 +212,9 @@ def test_iterm2_get_opacity_failure():
 
 
 def test_iterm2_get_opacity_timeout():
-    from hermes_neurovision.bg_mode import _iterm2_get_opacity
     import subprocess
+
+    from hermes_neurovision.bg_mode import _iterm2_get_opacity
     with patch("subprocess.run", side_effect=subprocess.TimeoutExpired("osascript", 3)):
         assert _iterm2_get_opacity() is None
 
@@ -409,7 +418,7 @@ def test_wezterm_set_opacity_no_config():
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_apply_auto_opacity_iterm2(tmp_config):
-    from hermes_neurovision.bg_mode import apply_auto_opacity, _load_original_opacity
+    from hermes_neurovision.bg_mode import _load_original_opacity, apply_auto_opacity
     cfg = {"auto_opacity": True, "opacity": 0.45}
 
     with patch("hermes_neurovision.bg_mode._detect_terminal_app", return_value="iterm2"):
@@ -490,8 +499,9 @@ def test_terminal_get_opacity_failure():
 
 
 def test_terminal_get_opacity_timeout():
-    from hermes_neurovision.bg_mode import _terminal_get_opacity
     import subprocess as sp
+
+    from hermes_neurovision.bg_mode import _terminal_get_opacity
     with patch("subprocess.run", side_effect=sp.TimeoutExpired("osascript", 3)):
         assert _terminal_get_opacity() is None
 
@@ -602,7 +612,11 @@ def test_restore_opacity_no_saved_value():
 
 
 def test_restore_opacity_clears_file(tmp_config):
-    from hermes_neurovision.bg_mode import _save_original_opacity, restore_opacity, _load_original_opacity
+    from hermes_neurovision.bg_mode import (
+        _load_original_opacity,
+        _save_original_opacity,
+        restore_opacity,
+    )
     _save_original_opacity("alacritty", 0.9)
     with patch("hermes_neurovision.bg_mode._alacritty_set_opacity", return_value=True):
         restore_opacity(verbose=False)
@@ -656,7 +670,7 @@ def test_build_nv_command_no_binary_raises():
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_launch_bg_starts_process(tmp_config):
-    from hermes_neurovision.bg_mode import launch_bg, _read_pid
+    from hermes_neurovision.bg_mode import _read_pid, launch_bg
     mock_proc = MagicMock()
     mock_proc.pid = 54321
     cfg = {"gallery": True, "theme": "neural-sky", "theme_seconds": 30, "quiet": True,
@@ -687,7 +701,7 @@ def test_launch_bg_calls_auto_opacity(tmp_config):
 
 
 def test_launch_bg_skips_if_already_running(tmp_config):
-    from hermes_neurovision.bg_mode import launch_bg, _write_pid
+    from hermes_neurovision.bg_mode import _write_pid, launch_bg
     _write_pid(11111)
     with patch("hermes_neurovision.bg_mode.is_bg_running", return_value=True):
         with patch("subprocess.Popen") as mock_popen:
@@ -708,7 +722,7 @@ def test_stop_bg_not_running():
 
 
 def test_stop_bg_kills_process_and_restores_opacity(tmp_config):
-    from hermes_neurovision.bg_mode import stop_bg, _write_pid, _read_pid
+    from hermes_neurovision.bg_mode import _read_pid, _write_pid, stop_bg
     _write_pid(77777)
     kill_calls = []
 
@@ -741,7 +755,7 @@ def test_status_bg_not_running():
 
 
 def test_status_bg_running(tmp_config):
-    from hermes_neurovision.bg_mode import status_bg, _write_pid
+    from hermes_neurovision.bg_mode import _write_pid, status_bg
     _write_pid(42)
     with patch("hermes_neurovision.bg_mode.is_bg_running", return_value=True):
         s = status_bg()
@@ -903,7 +917,7 @@ def test_handle_bg_command_unknown_action(tmp_config):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def test_stop_then_start_cycle(tmp_config):
-    from hermes_neurovision.bg_mode import launch_bg, stop_bg, _read_pid
+    from hermes_neurovision.bg_mode import _read_pid, launch_bg, stop_bg
 
     mock_proc = MagicMock()
     mock_proc.pid = 100

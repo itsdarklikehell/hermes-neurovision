@@ -16,9 +16,6 @@ import math
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
 
-
-
-
 # ======================================================================
 # From cosmic.py
 # ======================================================================
@@ -1811,8 +1808,7 @@ class Legacy2SpiralGalaxyPlugin(ThemePlugin):
         radius = radius * (0.9997 + math.sin(frame * 0.01 + star[3]) * 0.0006)
         # Clamp to screen so stars don't drift off edge
         max_r = max(w, h) * 0.55
-        if radius > max_r:
-            radius = max_r
+        radius = min(radius, max_r)
         star[0] = cx + math.cos(angle) * radius
         star[1] = cy + math.sin(angle) * radius
         return True

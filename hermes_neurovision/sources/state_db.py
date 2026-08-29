@@ -6,7 +6,6 @@ import json
 import os
 import sqlite3
 import time
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.events import VisionEvent
 
@@ -17,15 +16,15 @@ class StateDbSource:
     def __init__(self, path: str = DEFAULT_PATH):
         self._path = path
         self._last_message_id: int = self._get_current_max_message_id(path)
-        self._active_session_id: Optional[str] = None
-        self._last_model: Optional[str] = None
-        self._last_tokens: Tuple[int, int] = (0, 0)
-        self._session_start_time: Optional[float] = None
+        self._active_session_id: str | None = None
+        self._last_model: str | None = None
+        self._last_tokens: tuple[int, int] = (0, 0)
+        self._session_start_time: float | None = None
         self._last_duration_event: float = 0.0
         self._duration_event_interval = 300.0  # 5 minutes in seconds
         # Tool usage pattern tracking
-        self._tool_history: List[Tuple[str, float]] = []  # (tool_name, timestamp)
-        self._last_tool_name: Optional[str] = None
+        self._tool_history: list[tuple[str, float]] = []  # (tool_name, timestamp)
+        self._last_tool_name: str | None = None
         self._tool_repeat_count: int = 0
 
     @staticmethod
@@ -43,11 +42,11 @@ class StateDbSource:
         except (sqlite3.Error, OSError):
             return 0
 
-    def poll(self, since: float) -> List[VisionEvent]:
+    def poll(self, since: float) -> list[VisionEvent]:
         if not os.path.exists(self._path):
             return []
 
-        events: List[VisionEvent] = []
+        events: list[VisionEvent] = []
         try:
             conn = sqlite3.connect(self._path, timeout=1.0)
             conn.row_factory = sqlite3.Row

@@ -1,8 +1,9 @@
 """Boids flocking simulation."""
 from __future__ import annotations
+
 import math
 import random
-from typing import List, Tuple
+
 
 class BoidsFlock:
     """Classic separation/alignment/cohesion flocking."""
@@ -17,7 +18,7 @@ class BoidsFlock:
         self.align_dist = align_dist
         self.cohesion_dist = cohesion_dist
         self._rng = random.Random()
-        self._attractors: List[Tuple[float, float, int]] = []  # (x, y, ttl)
+        self._attractors: list[tuple[float, float, int]] = []  # (x, y, ttl)
         # Boids: [x, y, vx, vy]
         self.boids = []
         for _ in range(n_boids):
@@ -90,7 +91,7 @@ class BoidsFlock:
             boid[0] = (boid[0] + boid[2]) % self.w
             boid[1] = (boid[1] + boid[3]) % self.h
     
-    def render_boids(self) -> List[Tuple[int, int, str, str]]:
+    def render_boids(self) -> list[tuple[int, int, str, str]]:
         """Return list of (x, y, char, color_key) for all boids."""
         result = []
         for boid in self.boids:

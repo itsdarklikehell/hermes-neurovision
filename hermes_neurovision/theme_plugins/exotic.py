@@ -128,7 +128,8 @@ class NeonRainPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_chunk" or event_kind == "llm_start":
             return Reaction(element=ReactiveElement.STREAM, intensity=0.6,
                            origin=(random.random(), 0.0), color_key="accent", duration=0.8)
@@ -226,7 +227,8 @@ class VolcanicPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "error" or event_kind == "crash" or event_kind == "threat_blocked":
             return Reaction(element=ReactiveElement.SHATTER, intensity=1.0,
                            origin=(0.5, 0.8), color_key="warning", duration=2.5)
@@ -328,7 +330,8 @@ class CrystalCavePlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
                            origin=(random.random(), random.random()), color_key="bright", duration=3.5)
@@ -478,7 +481,8 @@ class SpiderWebPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "git_commit" or event_kind == "file_edit":
             return Reaction(element=ReactiveElement.TRAIL, intensity=0.7,
                            origin=(random.random(), random.random()), color_key="accent", duration=2.0)
@@ -612,7 +616,8 @@ class SnowGlobePlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "compression_started" or event_kind == "compression_ended":
             return Reaction(element=ReactiveElement.WAVE, intensity=0.8,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)

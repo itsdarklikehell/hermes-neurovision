@@ -4,9 +4,8 @@ from __future__ import annotations
 import json
 from unittest.mock import patch
 
+from hermes_neurovision.cli import main, parse_args
 from hermes_neurovision.themes import THEMES
-from hermes_neurovision.cli import parse_args, main
-
 
 # ---------------------------------------------------------------------------
 # disabled.py unit tests

@@ -12,13 +12,19 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import List, Optional
 
-from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, SpecialEffect
+from hermes_neurovision.plugin import (
+    Reaction,
+    ReactiveElement,
+    SpecialEffect,
+    ThemePlugin,
+)
 from hermes_neurovision.theme_plugins import register
 from hermes_neurovision.theme_plugins.attractors import (
-    _ensure_rainbow, _rainbow_pair, _rainbow_pair_angle,
     _density_char,
+    _ensure_rainbow,
+    _rainbow_pair,
+    _rainbow_pair_angle,
 )
 
 
@@ -441,7 +447,6 @@ class PlasmaRainbowPlugin(ThemePlugin):
             self._palette_state = "peak"
         elif trigger_effect == "llm_start":
             self._palette_state = "thinking"
-        return None
 
     # ── v0.2: Special effects ─────────────────────────────────────────────────
 
@@ -478,7 +483,7 @@ class PlasmaRainbowPlugin(ThemePlugin):
             t = f * 0.035 * speed
             for y in range(1, h - 1):
                 yf = y / max(h, 1)
-                for x in range(0, w - 1):
+                for x in range(w - 1):
                     xf = x / max(w, 1)
                     v1 = math.sin(xf * self._freqs[0] * (1 + boost) + t * 1.5)
                     v2 = math.sin(yf * self._freqs[1] * (1 + boost) - t * 0.9)
@@ -500,7 +505,7 @@ class PlasmaRainbowPlugin(ThemePlugin):
             # Rapid rainbow cycling across entire screen
             f = state.frame
             for y in range(1, h - 1):
-                for x in range(0, w - 1):
+                for x in range(w - 1):
                     hue_t = ((x + y + f * 8) % 60) / 60.0
                     pair = _rainbow_pair(hue_t)
                     ch = random.choice("▒▓#*+")
@@ -535,7 +540,7 @@ class PlasmaRainbowPlugin(ThemePlugin):
 
         for y in range(1, h - 1):
             yf = y / max(h, 1)
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 xf = x / max(w, 1)
 
                 # 6 independent waves using drifting frequencies
@@ -580,7 +585,7 @@ class PlasmaRainbowPlugin(ThemePlugin):
 
         # Horizon lines at top and bottom rows (mirror_y symmetry reflection)
         base_pair = _rainbow_pair(t * 0.1 % 1.0)
-        for hx in range(0, w - 1):
+        for hx in range(w - 1):
             _safe(stdscr, 1, hx, "─", base_pair | curses.A_DIM)
             _safe(stdscr, h - 2, hx, "─", base_pair | curses.A_DIM)
 
@@ -662,7 +667,7 @@ class FractalZoomPlugin(ThemePlugin):
         base_dim = curses.color_pair(color_pairs.get("base", 0)) | curses.A_DIM
 
         for py in range(1, h - 1):
-            for px in range(0, w - 1):
+            for px in range(w - 1):
                 c_re = re_min + (px / max(w - 2, 1)) * (re_max - re_min)
                 c_im = im_min + (py / max(h - 2, 1)) * (im_max - im_min)
 
@@ -843,7 +848,6 @@ class FractalZoomPlugin(ThemePlugin):
             self._palette_state = "skill"   # deep zoom discovery — cyan/white
         elif trigger_effect == "agent_start":
             self._palette_state = "bright"
-        return None
 
     # ── v0.2: Special effects ─────────────────────────────────────────────────
 
@@ -936,9 +940,9 @@ class ParticleVortexPlugin(ThemePlugin):
     _N = 350  # particles per vortex
 
     def __init__(self):
-        self._particles_a: Optional[List] = None  # vortex A (CCW)
-        self._particles_b: Optional[List] = None  # vortex B (CW)
-        self._trail: Optional[List[List[float]]] = None
+        self._particles_a: list | None = None  # vortex A (CCW)
+        self._particles_b: list | None = None  # vortex B (CW)
+        self._trail: list[list[float]] | None = None
         self._w = self._h = 0
         self._rng = random.Random(42)
         self._palette_state = "normal"
@@ -1199,7 +1203,6 @@ class ParticleVortexPlugin(ThemePlugin):
             self._palette_state = "bright"  # white/cyan ignition
         elif trigger_effect == "skill_create":
             self._palette_state = "skill"
-        return None
 
     # ── v0.2: Special effects ─────────────────────────────────────────────────
 
@@ -1334,7 +1337,7 @@ class ChladniSandPlugin(ThemePlugin):
         threshold = 0.12 + 0.06 * math.sin(f * 0.01)
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 # Normalise to [0, 1]
                 xn = x / max(w - 1, 1)
                 yn = y / max(h - 1, 1)
@@ -1539,7 +1542,6 @@ class ChladniSandPlugin(ThemePlugin):
             self._palette_state = "memory"  # green/cyan
         elif trigger_effect == "agent_start":
             self._palette_state = "bright"
-        return None
 
     # ── v0.2: Special effects ─────────────────────────────────────────────────
 

@@ -9,11 +9,9 @@ from __future__ import annotations
 
 import curses
 import random
-from typing import List
 
-from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement
+from hermes_neurovision.plugin import Reaction, ReactiveElement, ThemePlugin
 from hermes_neurovision.theme_plugins import register
-
 
 # ── Katakana + symbol glyph pool for digital rain ─────────────────────────────
 # Half-width katakana U+FF65..U+FF9F, plus digits and symbols
@@ -42,9 +40,16 @@ class _RainColumn:
     """
 
     __slots__ = (
-        "x", "head_y", "speed", "length",
-        "glyphs", "_frac",
-        "reveal", "reveal_row", "reveal_timer", "reveal_bright_timer",
+        "_frac",
+        "glyphs",
+        "head_y",
+        "length",
+        "reveal",
+        "reveal_bright_timer",
+        "reveal_row",
+        "reveal_timer",
+        "speed",
+        "x",
     )
 
     def __init__(self, x: int, h: int, rng: random.Random) -> None:
@@ -52,7 +57,7 @@ class _RainColumn:
         self.head_y: float = -rng.randint(0, h)
         self.speed: float = rng.uniform(0.25, 0.75)
         self.length: int = rng.randint(4, min(20, h - 2))
-        self.glyphs: List[str] = [
+        self.glyphs: list[str] = [
             _RAIN_GLYPHS[rng.randint(0, _GLYPH_COUNT - 1)]
             for _ in range(max(1, h))
         ]
@@ -111,7 +116,7 @@ class BinaryRainV2Plugin(ThemePlugin):
     # Per-instance column state — keyed by (width, height) so resizes rebuild.
     def __init__(self) -> None:
         super().__init__()
-        self._cols: List[_RainColumn] = []
+        self._cols: list[_RainColumn] = []
         self._last_wh = (-1, -1)
 
     def build_nodes(self, w, h, cx, cy, count, rng):

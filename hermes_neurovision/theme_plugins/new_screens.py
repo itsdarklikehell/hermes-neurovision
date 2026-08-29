@@ -14,7 +14,6 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import List
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -62,7 +61,7 @@ class AsciiRainPlugin(ThemePlugin):
     def __init__(self):
         super().__init__()
         self._cols: dict = {}   # col_x -> {y, speed, trail, char_seq}
-        self._pools: List[List] = []  # [x, y, age, max_age]
+        self._pools: list[list] = []  # [x, y, age, max_age]
         self._rng = random.Random(7331)
         self._w = self._h = 0
 
@@ -73,7 +72,7 @@ class AsciiRainPlugin(ThemePlugin):
         rng = self._rng
         self._cols = {}
         # Spawn a stream in ~60% of columns initially, staggered start
-        for x in range(0, w - 1):
+        for x in range(w - 1):
             if rng.random() < 0.55:
                 self._cols[x] = {
                     "y":     rng.uniform(-h, 0),
@@ -102,7 +101,7 @@ class AsciiRainPlugin(ThemePlugin):
 
         # Clear with spaces first
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 _safe(stdscr, y, x, " ", base_dim)
 
         # Draw pools first (background)
@@ -184,7 +183,8 @@ class AsciiRainPlugin(ThemePlugin):
 # ═══════════════════════════════════════════════════════════════════════════
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_chunk" or event_kind == "llm_start":
             return Reaction(element=ReactiveElement.STREAM, intensity=0.7,
                            origin=(random.random(), 0.0), color_key="accent", duration=1.0)
@@ -323,7 +323,7 @@ class SandAutomatonPlugin(ThemePlugin):
         age = self._age
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 idx = y * w + x
                 if g[idx]:
                     a  = age[idx]
@@ -350,7 +350,8 @@ class SandAutomatonPlugin(ThemePlugin):
 # ═══════════════════════════════════════════════════════════════════════════
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "tool_call" or event_kind == "mcp_tool_call":
             return Reaction(element=ReactiveElement.RIPPLE, intensity=0.7,
                            origin=(random.random(), 0.0), color_key="bright", duration=1.5)
@@ -470,7 +471,7 @@ class AsciiRorschachPlugin(ThemePlugin):
         nc       = len(chars) - 1
 
         for y in range(1, h - 1):
-            for xh in range(0, hw):
+            for xh in range(hw):
                 v   = ink[y * hw + xh]
                 ci  = int(v * nc)
                 ch  = chars[ci]
@@ -493,7 +494,7 @@ class AsciiRorschachPlugin(ThemePlugin):
 # GEOMETRIC 1: wireframe-cube — Spinning 3D wireframe cube + inner octahedron
 # ═══════════════════════════════════════════════════════════════════════════
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=1.0,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)
@@ -590,8 +591,7 @@ class WireframeCubePlugin(ThemePlugin):
         """Simple perspective projection."""
         fov = 3.5
         dz  = fov + z
-        if dz < 0.1:
-            dz = 0.1
+        dz = max(dz, 0.1)
         px = int(cx + x * scale / dz)
         py = int(cy + y * scale / dz / ay)
         return px, py
@@ -629,7 +629,7 @@ class WireframeCubePlugin(ThemePlugin):
 
         # Clear
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 _safe(stdscr, y, x, " ", base_dim)
 
         # Rotation angles: cube and octahedron spin at different rates
@@ -679,7 +679,7 @@ class WireframeCubePlugin(ThemePlugin):
 # GEOMETRIC 2: hypercube-fold — Rotating 4D tesseract projection
 # ═══════════════════════════════════════════════════════════════════════════
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="bright", duration=2.0)
@@ -789,7 +789,7 @@ class HypercubePlugin(ThemePlugin):
 
         # Clear
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 _safe(stdscr, y, x, " ", base_dim)
 
         # 16 hypercube vertices: all (±1,±1,±1,±1)
@@ -851,7 +851,7 @@ class HypercubePlugin(ThemePlugin):
                 _safe(stdscr, py, px, vch, attr)
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "compression_started" or event_kind == "compression_ended":
             return Reaction(element=ReactiveElement.WAVE, intensity=1.0,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)

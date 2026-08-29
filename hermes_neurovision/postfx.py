@@ -6,7 +6,7 @@ Each function is standalone with defaults that disable the effect.
 from __future__ import annotations
 
 import math
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from hermes_neurovision.renderer import FrameBuffer
@@ -110,7 +110,7 @@ def apply_glow(buf: FrameBuffer, radius: int) -> None:
                         target.attr = curses.A_DIM
 
 
-def apply_decay(buf: FrameBuffer, sequence: Optional[str]) -> None:
+def apply_decay(buf: FrameBuffer, sequence: str | None) -> None:
     """Age cells through a character decay sequence.
     sequence=None means disabled.
     Example sequence: '█▓▒░·. ' — chars age through this."""
@@ -132,7 +132,7 @@ def apply_decay(buf: FrameBuffer, sequence: Optional[str]) -> None:
                     cell.attr = curses.A_DIM
 
 
-def apply_symmetry(buf: FrameBuffer, mode: Optional[str]) -> None:
+def apply_symmetry(buf: FrameBuffer, mode: str | None) -> None:
     """Mirror/rotate buffer contents.
     mode: 'mirror_x' (left->right), 'mirror_y' (top->bottom),
           'mirror_xy' (both), 'rotate_4' (4-fold rotational).
@@ -189,7 +189,7 @@ def apply_symmetry(buf: FrameBuffer, mode: Optional[str]) -> None:
                             buf.cells[py][px].attr = src.attr
 
 
-def apply_mask(buf: FrameBuffer, mask: Optional[list]) -> None:
+def apply_mask(buf: FrameBuffer, mask: list | None) -> None:
     """Apply boolean stencil mask. True=visible, False=hidden.
     mask is a 2D list[list[bool]] (h rows x w cols). None means no mask."""
     if mask is None:

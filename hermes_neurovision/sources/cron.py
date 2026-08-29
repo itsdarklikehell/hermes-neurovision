@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import os
 import time
-from typing import List
 
 from hermes_neurovision.events import VisionEvent
 
@@ -17,11 +16,11 @@ class CronSource:
         self._was_locked: bool = False
         self._known_outputs: set = set()
 
-    def poll(self, since: float) -> List[VisionEvent]:
+    def poll(self, since: float) -> list[VisionEvent]:
         if not os.path.isdir(self._path):
             return []
 
-        events: List[VisionEvent] = []
+        events: list[VisionEvent] = []
         now = time.time()
 
         # Check lock file for execution state

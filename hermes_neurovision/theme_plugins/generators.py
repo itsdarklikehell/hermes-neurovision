@@ -15,7 +15,6 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import List, Optional, Tuple
 
 from hermes_neurovision.plugin import ThemePlugin
 from hermes_neurovision.theme_plugins import register
@@ -41,7 +40,7 @@ class LorenzAttractorPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._grid: Optional[List[List[float]]] = None
+        self._grid: list[list[float]] | None = None
         self._x, self._y, self._z = 0.1, 0.0, 0.0
         self._w = self._h = 0
         self._angle = 0.0
@@ -115,7 +114,7 @@ class LorenzAttractorPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="accent", duration=2.0)
@@ -148,7 +147,7 @@ class LorenzAttractorPlugin(ThemePlugin):
 
 # ── 2. Fourier Epicycles ─────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="accent", duration=2.0)
@@ -190,13 +189,13 @@ class FourierEpicyclesPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._trail: List[Tuple[int, int]] = []
+        self._trail: list[tuple[int, int]] = []
         self._phase = 0.0
-        self._amps: Optional[List[float]] = None
-        self._freqs: Optional[List[float]] = None
-        self._phases: Optional[List[float]] = None
+        self._amps: list[float] | None = None
+        self._freqs: list[float] | None = None
+        self._phases: list[float] | None = None
         self._morph_t = 0.0
-        self._next_amps: Optional[List[float]] = None
+        self._next_amps: list[float] | None = None
 
     def build_nodes(self, w, h, cx, cy, count, rng):
         return []
@@ -255,7 +254,7 @@ class FourierEpicyclesPlugin(ThemePlugin):
         # Clear background
         dim = curses.color_pair(color_pairs["base"]) | curses.A_DIM
         for gy in range(1, h - 1):
-            for gx in range(0, w - 1):
+            for gx in range(w - 1):
                 _safe(stdscr, gy, gx, " ", dim)
 
         # Draw faint epicycle circles
@@ -298,7 +297,7 @@ class FourierEpicyclesPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "memory_save" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)
@@ -331,7 +330,7 @@ class FourierEpicyclesPlugin(ThemePlugin):
 
 # ── 3. Sand Cascade ──────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "memory_save" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)
@@ -378,7 +377,7 @@ class SandCascadePlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._grid: Optional[bytearray] = None
+        self._grid: bytearray | None = None
         self._w = self._h = 0
 
     def build_nodes(self, w, h, cx, cy, count, rng):
@@ -477,7 +476,7 @@ class SandCascadePlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "tool_call" or event_kind == "mcp_tool_call":
             return Reaction(element=ReactiveElement.RIPPLE, intensity=0.7,
                            origin=(random.random(), 0.0), color_key="bright", duration=1.5)
@@ -543,7 +542,7 @@ class RorschachPlugin(ThemePlugin):
 
         for gy in range(1, h - 1):
             dy = gy - cy
-            for gx in range(0, cx):
+            for gx in range(cx):
                 dx = gx - cx  # always negative (left side)
                 v = 0.0
                 for fx, fy, spd, ph in self._waves:
@@ -572,7 +571,7 @@ class RorschachPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=0.9,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)
@@ -605,7 +604,7 @@ class RorschachPlugin(ThemePlugin):
 
 # ── 5. DLA Crystal ──────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=0.9,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)
@@ -647,8 +646,8 @@ class DlaCrystalPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._crystal: Optional[bytearray] = None
-        self._walkers: List[List[int]] = []
+        self._crystal: bytearray | None = None
+        self._walkers: list[list[int]] = []
         self._w = self._h = 0
         self._crystal_size = 0
 
@@ -750,7 +749,7 @@ class DlaCrystalPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
                            origin=(random.random(), random.random()), color_key="bright", duration=4.0)
@@ -783,7 +782,7 @@ class DlaCrystalPlugin(ThemePlugin):
 
 # ── 6. Spirograph ────────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
                            origin=(random.random(), random.random()), color_key="bright", duration=4.0)
@@ -838,7 +837,7 @@ class SpirographPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._trails: List[List[Tuple[int, int, int]]] = [[], [], []]  # (x, y, color_idx)
+        self._trails: list[list[tuple[int, int, int]]] = [[], [], []]  # (x, y, color_idx)
         self._t = [0.0, math.tau / 3, math.tau * 2 / 3]
         self._preset_idx = 0
         self._morph_t = 0.0
@@ -915,7 +914,7 @@ class SpirographPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="accent", duration=2.0)
@@ -948,7 +947,7 @@ class SpirographPlugin(ThemePlugin):
 
 # ── 7. Harmonograph ──────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "cron_tick" or event_kind == "background_proc":
             return Reaction(element=ReactiveElement.ORBIT, intensity=0.6,
                            origin=(0.5, 0.5), color_key="accent", duration=2.0)
@@ -991,7 +990,7 @@ class HarmonographPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._grid: Optional[List[List[float]]] = None
+        self._grid: list[list[float]] | None = None
         self._t = 0.0
         self._w = self._h = 0
         # (freq, phase, amp) for x1, x2, y1, y2
@@ -1063,7 +1062,7 @@ class HarmonographPlugin(ThemePlugin):
 
 
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_start" or event_kind == "llm_end":
             return Reaction(element=ReactiveElement.WAVE, intensity=0.8,
                            origin=(0.5, 0.5), color_key="accent", duration=2.0)
@@ -1096,7 +1095,7 @@ class HarmonographPlugin(ThemePlugin):
 
 # ── 8. Julia Morph ───────────────────────────────────────────────────────────
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_start" or event_kind == "llm_end":
             return Reaction(element=ReactiveElement.WAVE, intensity=0.8,
                            origin=(0.5, 0.5), color_key="accent", duration=2.0)
@@ -1138,7 +1137,7 @@ class JuliaMorphPlugin(ThemePlugin):
 
     def __init__(self):
         super().__init__()
-        self._grid: Optional[List[List[float]]] = None
+        self._grid: list[list[float]] | None = None
         self._theta = 0.0
         self._w = self._h = 0
 
@@ -1216,7 +1215,7 @@ class JuliaMorphPlugin(ThemePlugin):
 
                 _safe(stdscr, gy, gx, ch, attr)
     def react(self, event_kind, data):
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "reasoning_change" or event_kind == "personality_change":
             return Reaction(element=ReactiveElement.GLYPH, intensity=1.0,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)

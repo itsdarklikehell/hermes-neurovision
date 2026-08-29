@@ -5,11 +5,12 @@ from __future__ import annotations
 import curses
 import math
 import time
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Dict, Iterable, Optional, Tuple
+from typing import TYPE_CHECKING
 
-from hermes_neurovision.themes import STAR_CHARS, PULSE_CHARS
 from hermes_neurovision import postfx
+from hermes_neurovision.themes import PULSE_CHARS, STAR_CHARS
 
 if TYPE_CHECKING:
     from hermes_neurovision.scene import ThemeState
@@ -88,7 +89,7 @@ class _BufferShim:
             ch = chr(ch)
         self._buf.put(x, y, str(ch), pair, style)
 
-    def getmaxyx(self) -> Tuple[int, int]:
+    def getmaxyx(self) -> tuple[int, int]:
         return (self._buf.h, self._buf.w)
 
 
@@ -97,14 +98,14 @@ class _BufferShim:
 # ---------------------------------------------------------------------------
 
 class Renderer:
-    def __init__(self, stdscr: "curses._CursesWindow") -> None:
+    def __init__(self, stdscr: curses._CursesWindow) -> None:
         self.stdscr = stdscr
         self.color_pairs = self._init_colors()
-        self._current_palette: Optional[Tuple[int, int, int, int]] = None
-        self._buffer: Optional[FrameBuffer] = None
+        self._current_palette: tuple[int, int, int, int] | None = None
+        self._buffer: FrameBuffer | None = None
         self._echo_ring: list = []  # ring buffer for echo effect
 
-    def _init_colors(self) -> Dict[str, int]:
+    def _init_colors(self) -> dict[str, int]:
         pairs = {
             "base": 0,
             "soft": 0,
@@ -166,7 +167,7 @@ class Renderer:
         })
         return pairs
 
-    def _apply_palette(self, palette: Tuple[int, int, int, int]) -> None:
+    def _apply_palette(self, palette: tuple[int, int, int, int]) -> None:
         """Re-initialize color pairs 1-4 from theme palette. Pair 5 (warning) stays fixed."""
         if palette == self._current_palette:
             return
@@ -179,8 +180,8 @@ class Renderer:
             except curses.error:
                 pass
 
-    def draw(self, state: "ThemeState", gallery_index: int, gallery_total: int,
-             end_time: Optional[float], hide_hud: bool = False,
+    def draw(self, state: ThemeState, gallery_index: int, gallery_total: int,
+             end_time: float | None, hide_hud: bool = False,
              skip_refresh: bool = False) -> None:
         stdscr = self.stdscr
         h, w = stdscr.getmaxyx()
@@ -333,7 +334,7 @@ class Renderer:
         except curses.error:
             pass
 
-    def _draw_overlay(self, state: "ThemeState", gallery_index: int, gallery_total: int, end_time: Optional[float]) -> None:
+    def _draw_overlay(self, state: ThemeState, gallery_index: int, gallery_total: int, end_time: float | None) -> None:
         title = f" Hermes Neurovisualizer // {state.config.name} "
         from hermes_neurovision import __version__
         version = f"v{__version__}"
@@ -358,7 +359,7 @@ class Renderer:
 
     # ── Buffered draw methods ─────────────────────────────────────────
 
-    def _draw_stars(self, state: "ThemeState") -> None:
+    def _draw_stars(self, state: ThemeState) -> None:
         plugin = state.plugin
         buf = self._buffer
         for x, y, brightness, char_idx in state.stars:
@@ -371,7 +372,7 @@ class Renderer:
                 attr = 0
             buf.put(int(x), int(y), glyph, cp, attr)
 
-    def _draw_edges(self, state: "ThemeState") -> None:
+    def _draw_edges(self, state: ThemeState) -> None:
         plugin = state.plugin
         buf = self._buffer
         for idx_a, idx_b in state.edges:
@@ -394,7 +395,7 @@ class Renderer:
                 style = curses.A_DIM if color_key == "base" else 0
                 buf.put(x, y, glyph, cp, style)
 
-    def _draw_nodes(self, state: "ThemeState") -> None:
+    def _draw_nodes(self, state: ThemeState) -> None:
         plugin = state.plugin
         buf = self._buffer
         total = len(state.nodes)
@@ -406,7 +407,7 @@ class Renderer:
             cp = curses.color_pair(self.color_pairs[color_key])
             buf.put(x, y, glyph, cp)
 
-    def _draw_packets(self, state: "ThemeState") -> None:
+    def _draw_packets(self, state: ThemeState) -> None:
         plugin = state.plugin
         buf = self._buffer
         color_key = plugin.packet_color_key()
@@ -421,7 +422,7 @@ class Renderer:
             cp = curses.color_pair(self.color_pairs[color_key])
             buf.put(x, y, packet.glyph, cp, curses.A_BOLD)
 
-    def _draw_streaks(self, state: 'ThemeState') -> None:
+    def _draw_streaks(self, state: ThemeState) -> None:
         """Draw motion streaks/trails."""
         buf = self._buffer
         color_key = state.plugin.streak_color_key()
@@ -436,7 +437,7 @@ class Renderer:
                     style = curses.A_BOLD if i == 0 else (curses.A_DIM if i > streak.length // 2 else 0)
                     buf.put(tx, ty, streak.char, cp, style)
 
-    def _draw_particles(self, state: "ThemeState") -> None:
+    def _draw_particles(self, state: ThemeState) -> None:
         plugin = state.plugin
         buf = self._buffer
         for particle in state.particles:
@@ -449,7 +450,7 @@ class Renderer:
             style = curses.A_DIM if color_key in ("soft", "base") else 0
             buf.put(x, y, particle.char, cp, style)
 
-    def _draw_pulses(self, state: "ThemeState") -> None:
+    def _draw_pulses(self, state: ThemeState) -> None:
         plugin = state.plugin
         buf = self._buffer
         color_key = plugin.pulse_color_key()
@@ -474,7 +475,7 @@ class Renderer:
 
     # ── Helpers (unchanged) ───────────────────────────────────────────
 
-    def _node_position(self, state: "ThemeState", idx: int) -> Tuple[int, int]:
+    def _node_position(self, state: ThemeState, idx: int) -> tuple[int, int]:
         x, y = state.nodes[idx]
         jitter = state.config.node_jitter
 
@@ -497,7 +498,7 @@ class Renderer:
         return "\u2571" if dx * dy < 0 else "\u2572"
 
     @staticmethod
-    def _ring_points(cx: float, cy: float, radius: float) -> Iterable[Tuple[int, int, str]]:
+    def _ring_points(cx: float, cy: float, radius: float) -> Iterable[tuple[int, int, str]]:
         if radius < 1.2:
             yield int(round(cx)), int(round(cy)), PULSE_CHARS[2]
             return
@@ -510,7 +511,7 @@ class Renderer:
             yield x, y, glyph
 
     @staticmethod
-    def _ray_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[Tuple[int, int, str]]:
+    def _ray_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[tuple[int, int, str]]:
         """Rays of light radiating outward — lines from center."""
         ray_count = 8
         ray_chars = "\u2500\u2502\u2571\u2572\u2500\u2502\u2571\u2572"
@@ -523,7 +524,7 @@ class Renderer:
                 yield x, y, glyph
 
     @staticmethod
-    def _spoked_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[Tuple[int, int, str]]:
+    def _spoked_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[tuple[int, int, str]]:
         """Spoked burst — only some directions emit, rotating over time."""
         spoke_count = 5
         gap = math.tau / spoke_count
@@ -537,7 +538,7 @@ class Renderer:
                 yield x, y, glyph
 
     @staticmethod
-    def _ripple_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[Tuple[int, int, str]]:
+    def _ripple_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[tuple[int, int, str]]:
         """Gentle concentric ripples — multiple fading rings."""
         for ring in range(3):
             r = radius - ring * 1.5
@@ -554,7 +555,7 @@ class Renderer:
                 yield x, y, glyph
 
     @staticmethod
-    def _cloud_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[Tuple[int, int, str]]:
+    def _cloud_points(cx: float, cy: float, radius: float, frame: int) -> Iterable[tuple[int, int, str]]:
         """Staggered cloudy effect — wobbly, organic expansion."""
         steps = max(10, int(radius * 10))
         cloud_chars = "\u2591\u2592\u2593\u2591\u00b7."
@@ -568,7 +569,7 @@ class Renderer:
             yield x, y, glyph
 
     @staticmethod
-    def _diamond_points(cx: float, cy: float, radius: float) -> Iterable[Tuple[int, int, str]]:
+    def _diamond_points(cx: float, cy: float, radius: float) -> Iterable[tuple[int, int, str]]:
         """Diamond/geometric burst — expanding diamond shape."""
         r = int(radius)
         for d in range(r + 1):
@@ -583,7 +584,7 @@ class Renderer:
             for x, y in points:
                 yield x, y, glyph
 
-    def _draw_emergent(self, state: 'ThemeState') -> None:
+    def _draw_emergent(self, state: ThemeState) -> None:
         """Render active emergent systems into the buffer."""
         import curses
         buf = self._buffer

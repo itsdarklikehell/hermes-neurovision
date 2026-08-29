@@ -1,10 +1,9 @@
 """Tests for Phase 6: Event Pipeline Expansion."""
 
-from hermes_neurovision.events import VisionEvent
 from hermes_neurovision.bridge import Bridge
-from hermes_neurovision.sources.custom import EVENT_MAP
+from hermes_neurovision.events import VisionEvent
 from hermes_neurovision.log_overlay import SOURCE_COLORS, LogOverlay, _format_event
-
+from hermes_neurovision.sources.custom import EVENT_MAP
 
 # ── custom.py EVENT_MAP ──────────────────────────────────────────────
 

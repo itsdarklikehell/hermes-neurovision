@@ -87,7 +87,8 @@ class CampfirePlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "memory_save" or event_kind == "skill_create":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
                            origin=(0.5, 0.7), color_key="bright", duration=2.5)
@@ -213,7 +214,8 @@ class AquariumPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
                            origin=(random.random(), random.random()), color_key="bright", duration=2.5)
@@ -355,7 +357,8 @@ class CircuitBoardPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "llm_chunk" or event_kind == "llm_start":
             return Reaction(element=ReactiveElement.STREAM, intensity=0.6,
                            origin=(random.random(), random.random()), color_key="accent", duration=0.8)
@@ -474,7 +477,8 @@ class LavaLampPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "memory_save" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=0.9,
                            origin=(random.random(), random.random()), color_key="bright", duration=3.0)
@@ -597,7 +601,8 @@ class FireflyFieldPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "approval_request" or event_kind == "dangerous_cmd":
             return Reaction(element=ReactiveElement.SPARK, intensity=1.0,
                            origin=(random.random(), random.random()), color_key="warning", duration=2.0)

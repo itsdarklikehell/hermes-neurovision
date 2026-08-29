@@ -44,6 +44,7 @@ def test_custom_source_missing_file():
 
 
 import sqlite3
+
 from hermes_neurovision.sources.state_db import StateDbSource
 
 

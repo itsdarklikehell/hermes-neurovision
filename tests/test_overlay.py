@@ -3,10 +3,15 @@ import time
 from unittest.mock import MagicMock
 
 from hermes_neurovision.overlay import (
-    SceneDelegate, GalleryDelegate, LiveDelegate, DaemonDelegate,
-    _MODES, _TEXT_COLORS, _GLOW_COLORS, _FADE_MODES,
+    _FADE_MODES,
+    _GLOW_COLORS,
+    _MODES,
+    _TEXT_COLORS,
+    DaemonDelegate,
+    GalleryDelegate,
+    LiveDelegate,
+    SceneDelegate,
 )
-
 
 # ── SceneDelegate ──────────────────────────────────────────────────────
 

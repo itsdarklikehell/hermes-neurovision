@@ -5,9 +5,13 @@ from __future__ import annotations
 import curses
 import math
 import random
-from typing import Optional, Tuple
 
-from hermes_neurovision.plugin import ThemePlugin, Reaction, ReactiveElement, SpecialEffect
+from hermes_neurovision.plugin import (
+    Reaction,
+    ReactiveElement,
+    SpecialEffect,
+    ThemePlugin,
+)
 from hermes_neurovision.theme_plugins import register
 
 
@@ -325,7 +329,7 @@ class QuasarV2Plugin(ThemePlugin):
 
         for y in range(1, h - 1):
             dy = y - cy
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = x - cx
                 # Elliptical distance (terminal aspect: chars are ~2:1)
                 dist_e = math.sqrt(dx * dx / 2.25 + dy * dy)
@@ -629,7 +633,7 @@ class SupernovaV2Plugin(ThemePlugin):
     def __init__(self):
         super().__init__()
         # Forced phase-skip: when agent_start fires we jump straight to blast
-        self._force_phase: Optional[int] = None
+        self._force_phase: int | None = None
         # Cycle offset — maintained so forced transitions continue naturally
         self._cycle_offset: int = 0
 
@@ -900,7 +904,7 @@ class SupernovaV2Plugin(ThemePlugin):
         block_chars = "\u2591\u2592\u2593\u2588\u2593\u2592\u2591"
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 dx = x - cx
                 dy = y - cy
                 dist = math.sqrt(dx * dx / 2.25 + dy * dy)
@@ -1017,7 +1021,7 @@ class SolV2Plugin(ThemePlugin):
         self._w = 0
         self._h = 0
         # Track active-region centres for flare targeting
-        self._active_region: Optional[Tuple[float, float]] = None
+        self._active_region: tuple[float, float] | None = None
         self._flare_arm = 0  # which magnetic arm fires next
 
     def build_nodes(self, w, h, cx, cy, count, rng):
@@ -1241,7 +1245,7 @@ class SolV2Plugin(ThemePlugin):
 
         for y in range(1, h - 1):
             ny = y / h
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = x / w
 
                 # Limb darkening
@@ -1341,7 +1345,7 @@ class TerraV2Plugin(ThemePlugin):
         rng = state.rng
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = (x / (w - 1)) * 2 - 1
                 ny = (y / (h - 1)) * 2 - 1
                 nx_adj = nx
@@ -1880,7 +1884,7 @@ class BinaryStarV2Plugin(ThemePlugin):
         hue_base = (f * 0.004) % 1.0
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 r1 = math.sqrt((x - s1x) ** 2 / 2.25 + (y - s1y) ** 2)
                 r2 = math.sqrt((x - s2x) ** 2 / 2.25 + (y - s2y) ** 2)
                 # Effective Roche potential including centrifugal term
@@ -2019,7 +2023,7 @@ class FractalEnginePlugin(ThemePlugin):
         mid_chars = "\u00b7.:;+="
 
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 re = view_cx + (x / max(w, 1) - 0.5) * zoom
                 im = view_cy + (y / max(h, 1) - 0.5) * zoom * (h / max(w, 1)) * 2.2
 
@@ -2330,7 +2334,7 @@ class NBodyPlugin(ThemePlugin):
 
         # Gravity field background
         for y in range(1, h - 1):
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = x / max(w, 1)
                 ny = y / max(h, 1)
                 V = 0.0
@@ -2662,7 +2666,7 @@ class StandingWavesPlugin(ThemePlugin):
 
         for y in range(1, h - 1):
             ny = y / max(h - 1, 1)
-            for x in range(0, w - 1):
+            for x in range(w - 1):
                 nx = x / max(w - 1, 1)
                 v = 0.0
                 for mode in modes:

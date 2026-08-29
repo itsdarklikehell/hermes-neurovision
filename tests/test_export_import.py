@@ -1,10 +1,15 @@
 """Tests for theme export/import functionality."""
 
 import json
+
 import pytest
 
 from hermes_neurovision.export import export_theme
-from hermes_neurovision.import_theme import import_theme, Version, IncompatibleVersionError
+from hermes_neurovision.import_theme import (
+    IncompatibleVersionError,
+    Version,
+    import_theme,
+)
 
 
 def test_version_parsing():

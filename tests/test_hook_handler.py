@@ -1,15 +1,17 @@
 import asyncio
+
 """Tests for hook_handler module."""
 
 import json
 import os
+
+# Import the hook handler module
+import sys
 import tempfile
 from unittest.mock import patch
 
 import pytest
 
-# Import the hook handler module
-import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "hermes_neurovision", "sources"))
 import hook_handler
 

@@ -1,8 +1,9 @@
 """Monitor MCP server connections."""
 from __future__ import annotations
+
 import os
 import time
-from typing import List
+
 from hermes_neurovision.events import VisionEvent
 
 # Watch for MCP state in hermes config
@@ -14,7 +15,7 @@ class McpSource:
         self._known_servers: set = set()
         self._last_check: float = 0.0
     
-    def poll(self, since: float) -> List[VisionEvent]:
+    def poll(self, since: float) -> list[VisionEvent]:
         now = time.time()
         # Only check every 5 seconds
         if now - self._last_check < 5.0:
@@ -45,5 +46,5 @@ class McpSource:
         return events
 
 _default = McpSource()
-def poll(since: float) -> List[VisionEvent]:
+def poll(since: float) -> list[VisionEvent]:
     return _default.poll(since)

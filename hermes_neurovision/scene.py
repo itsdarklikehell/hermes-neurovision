@@ -6,12 +6,9 @@ import math
 import random
 import time
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, List, Optional, Tuple
+from typing import Any
 
-if TYPE_CHECKING:
-    pass
-
-from hermes_neurovision.themes import ThemeConfig, STAR_CHARS, PACKET_CHARS
+from hermes_neurovision.themes import PACKET_CHARS, STAR_CHARS, ThemeConfig
 
 
 @dataclass
@@ -23,7 +20,7 @@ class Particle:
     life: float
     max_life: float
     char: str
-    frames: Optional[List[str]] = None
+    frames: list[str] | None = None
 
     def step(self) -> bool:
         self.x += self.vx
@@ -45,7 +42,7 @@ class Particle:
 
 @dataclass
 class Packet:
-    edge: Tuple[int, int]
+    edge: tuple[int, int]
     progress: float
     speed: float
     reverse: bool = False
@@ -97,12 +94,12 @@ class ThemeState:
     width: int
     height: int
     seed: int
-    nodes: List[Tuple[float, float]] = field(default_factory=list)
-    edges: List[Tuple[int, int]] = field(default_factory=list)
-    stars: List[List[float]] = field(default_factory=list)
-    packets: List[Packet] = field(default_factory=list)
-    particles: List[Particle] = field(default_factory=list)
-    pulses: List[Tuple[float, float, float]] = field(default_factory=list)
+    nodes: list[tuple[float, float]] = field(default_factory=list)
+    edges: list[tuple[int, int]] = field(default_factory=list)
+    stars: list[list[float]] = field(default_factory=list)
+    packets: list[Packet] = field(default_factory=list)
+    particles: list[Particle] = field(default_factory=list)
+    pulses: list[tuple[float, float, float]] = field(default_factory=list)
     frame: int = 0
     rng: random.Random = field(init=False)
 
@@ -110,19 +107,19 @@ class ThemeState:
     intensity_multiplier: float = 0.6
     _intensity_target: float = 0.6
     _intensity_rate: float = 0.0
-    _dynamic_nodes: List[Tuple[float, float]] = field(default_factory=list)
+    _dynamic_nodes: list[tuple[float, float]] = field(default_factory=list)
     flash_until: float = 0.0
     flash_color_key: str = "warning"
 
     quiet: bool = False  # suppress passive spawning; only react to explicit events
     tune: Any = None    # Optional[TuneSettings], set by app code
 
-    streaks: List[Streak] = field(default_factory=list)
-    overlay_effects: List[OverlayEffect] = field(default_factory=list)
-    active_specials: List[ActiveSpecial] = field(default_factory=list)
-    _cascade_queue: List[Tuple[int, float]] = field(default_factory=list)
+    streaks: list[Streak] = field(default_factory=list)
+    overlay_effects: list[OverlayEffect] = field(default_factory=list)
+    active_specials: list[ActiveSpecial] = field(default_factory=list)
+    _cascade_queue: list[tuple[int, float]] = field(default_factory=list)
     _palette_shift_until: float = 0.0
-    _shifted_palette: Optional[Tuple[int, int, int, int]] = None
+    _shifted_palette: tuple[int, int, int, int] | None = None
     _last_event_time: float = 0.0  # for idle detection / ambient_tick
 
     # Emergent systems (all Optional, None = disabled)
@@ -198,7 +195,7 @@ class ThemeState:
         # Default cluster logic
         usable_h = max(6.0, h - 6.0)
         usable_w = max(12.0, w - 8.0)
-        nodes: List[Tuple[float, float]] = []
+        nodes: list[tuple[float, float]] = []
         clusters = max(2, self.config.cluster_count)
         centers = []
         # Random initial rotation ensures 2-cluster arrangements aren't always
@@ -510,7 +507,7 @@ class ThemeState:
         self.packets.append(Packet((self.edges[edge_index][0], self.edges[edge_index][1]), self.rng.random(), speed, glyph=glyph))
 
     def _step_packets(self) -> None:
-        alive: List[Packet] = []
+        alive: list[Packet] = []
         for packet in self.packets:
             packet.step()
             if packet.progress <= 1.0:
@@ -552,7 +549,7 @@ class ThemeState:
         self.particles.append(Particle(x, y, vx, vy, life, life, char))
 
     def _step_particles(self) -> None:
-        next_particles: List[Particle] = []
+        next_particles: list[Particle] = []
         for particle in self.particles:
             if particle.step():
                 if 0 <= particle.x < self.width and 0 <= particle.y < self.height:
@@ -570,7 +567,7 @@ class ThemeState:
         self.pulses = next_pulses[-10:]
 
     def _step_streaks(self) -> None:
-        next_streaks: List[Streak] = []
+        next_streaks: list[Streak] = []
         for streak in self.streaks:
             if streak.step():
                 if 0 <= streak.x < self.width and 0 <= streak.y < self.height:
@@ -595,7 +592,7 @@ class ThemeState:
         if not self._cascade_queue:
             return
         now = time.time()
-        remaining: List[Tuple[int, float]] = []
+        remaining: list[tuple[int, float]] = []
         for node_idx, flash_time in self._cascade_queue:
             if now >= flash_time:
                 # Flash this node briefly
@@ -612,8 +609,12 @@ class ThemeState:
     def _init_emergent(self) -> None:
         """Initialize emergent systems from plugin config."""
         from hermes_neurovision.emergent import (
-            CellularAutomaton, PhysarumSim, NeuralField,
-            WaveField, BoidsFlock, ReactionDiffusion,
+            BoidsFlock,
+            CellularAutomaton,
+            NeuralField,
+            PhysarumSim,
+            ReactionDiffusion,
+            WaveField,
         )
         cfg = self.plugin.automaton_config()
         if cfg:

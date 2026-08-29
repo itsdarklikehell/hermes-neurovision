@@ -19,7 +19,8 @@ class ElectricMyceliumPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "git_commit" or event_kind == "file_edit" or event_kind == "browser_navigate":
             return Reaction(element=ReactiveElement.TRAIL, intensity=0.8,
                            origin=(random.random(), random.random()), color_key="bright", duration=2.0)
@@ -197,7 +198,8 @@ class CathedralCircuitPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "skill_create" or event_kind == "checkpoint_created":
             return Reaction(element=ReactiveElement.BLOOM, intensity=1.0,
                            origin=(0.5, 0.5), color_key="bright", duration=3.0)
@@ -317,7 +319,8 @@ class HybridPlugin(ThemePlugin):
 
     def react(self, event_kind, data):
         import random
-        from hermes_neurovision.plugin import ReactiveElement, Reaction
+
+        from hermes_neurovision.plugin import Reaction, ReactiveElement
         if event_kind == "agent_start" or event_kind == "session_resume":
             return Reaction(element=ReactiveElement.PULSE, intensity=0.9,
                            origin=(0.5, 0.5), color_key="bright", duration=2.5)
@@ -407,8 +410,7 @@ class SpiralGalaxyPlugin(ThemePlugin):
         radius = radius * (0.9997 + math.sin(frame * 0.01 + star[3]) * 0.0006)
         # Clamp to screen so stars don't drift off edge
         max_r = max(w, h) * 0.55
-        if radius > max_r:
-            radius = max_r
+        radius = min(radius, max_r)
         star[0] = cx + math.cos(angle) * radius
         star[1] = cy + math.sin(angle) * radius
         return True
